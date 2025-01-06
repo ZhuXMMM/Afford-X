@@ -133,5 +133,19 @@ body {
   font-size: smaller;
 }
 
+.header {
+  position: fixed;       
+  top: 10px;             
+  right: 10px;           
+  z-index: 1000;         
+}
 
+.github-icon i {
+  font-size: 1rem;       
+  color: #333;         
+  transition: color 0.3s; 
+}
 
+.github-icon:hover i {
+  color: #007BFF;      
+}
