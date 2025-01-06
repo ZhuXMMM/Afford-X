@@ -189,27 +189,24 @@
           <div class="column is-eight-fifths">
             <div class="intro content">
               <p>
-                In many real-world scenarios, effective robotic interaction involves not only identifying <em>what</em> an object is but also <em>how</em> it can be used. This deeper understanding—termed <strong>affordance reasoning</strong>—allows an agent to infer an object’s potential functionalities based on its physical attributes. By capturing such relationships, affordance reasoning supports a diverse range of tasks from selecting the right kitchen utensils for cooking to employing improvised tools when standard options are unavailable.
+                In many real-world settings, effective robotic interaction depends on understanding <em>how</em> objects can be utilized rather than merely recognizing <em>what</em> they are. Known as <strong>affordance reasoning</strong>, this capability infers an object’s potential functionalities from its physical properties, enabling tasks that range from choosing suitable kitchen utensils to improvising with substitute tools when standard equipment is unavailable. However, realizing robust affordance reasoning poses challenges: large-scale language models, while comprehensive, frequently exceed on-device computational constraints, and vision systems trained solely on object detection risk overfitting to visible nouns, neglecting essential action cues. Such limitations may cause a system to fixate on the most prominent object (e.g., a “bottle”) rather than the correct tool (e.g., a “napkin”) for the task at hand.
               </p>
               <p>
-                Nevertheless, implementing robust affordance reasoning in AI systems remains challenging. Large-scale pre-trained language models can in principle cover broad knowledge but are often impractical for on-device deployment due to high computational cost and strict usage policies. Moreover, vision models trained solely on object detection risk overfitting to familiar nouns, overlooking essential action cues. As a result, an affordance-oriented system may wrongly focus on the most visually prominent object (e.g., the “bottle”) instead of identifying the crucial instrument (e.g., the “napkin”) when instructed to “clean the bottle with something.” Such scenarios illustrate the need for methods that effectively integrate textual instructions (actions or verbs) with the visual context of potential objects.
-              </p>
-              <p>
-                To tackle these issues, we propose a lightweight end-to-end multimodal framework—<strong><em>Afford-X</em></strong>—that leverages knowledge distillation from a teacher model using explicit object labels to a student model operating purely on pronouns (e.g., “something”). By introducing two specialized modules, Verb Attention (VA) and Bi-Fusion (BF), our architecture emphasizes action-centric cues while enabling fine-grained visual-textual alignment. Moreover, we develop an automated approach to transform conventional object detection datasets into large-scale “task–object” pairs, thus enriching the affordance knowledge base with minimal manual labeling efforts.
+                To address these challenges, we propose a lightweight end-to-end multimodal framework—<strong><em>Afford-X</em></strong>—that distills knowledge from a label-informed teacher model to a pronoun-only student model (e.g., “something”). This design integrates two specialized modules, Verb Attention (VA) and Bi-Fusion (BF), which jointly emphasize action-centric cues and facilitate fine-grained vision–language alignment. Additionally, we construct large-scale “task–object” pairs using an automated pipeline that augments traditional object detection datasets with minimal manual labeling, thereby expanding the affordance knowledge base.
               </p>
               <p><strong>Key Contributions:</strong></p>
               <ul>
-                <li><em>Novel Framework:</em> We propose <strong>Afford-X</strong>, a slim, efficient model that achieves real-time inference for task-oriented manipulation.</li>
-                <li><em>Advanced Modules:</em> We integrate Verb Attention and Bi-Fusion strategies to better parse task requirements and capture intricate visual–text relationships.</li>
-                <li><em>Large-Scale Datasets:</em> We introduce two extensive affordance reasoning datasets (COCO-Aff and LVIS-Aff) by leveraging automated pipelines powered by GPT-4.</li>
-                <li><em>Empirical Validation:</em> Through experiments in simulated and real-world scenarios, our method shows superior performance to traditional detection-based or heavyweight generative models in diverse, dynamic tasks.</li>
+                <li><em>Novel Framework:</em> We introduce <strong>Afford-X</strong>, a slim and efficient model that achieves real-time inference for task-oriented manipulation.</li>
+                <li><em>Advanced Modules:</em> Verb Attention and Bi-Fusion jointly enhance action-focus and multimodal integration.</li>
+                <li><em>Large-Scale Datasets:</em> Our automated pipeline generates extensive affordance reasoning corpora (COCO-Aff and LVIS-Aff) via GPT-4-based processing.</li>
+                <li><em>Empirical Validation:</em> Experiments in simulated and real-world scenarios show that our approach outperforms conventional detection-based or heavyweight generative models across diverse dynamic tasks.</li>
               </ul>
             </div>
           </div>
         </div>
       </div>
     </div>
-  </section>
+</section>
 
 
 <!-- Video carousel -->
