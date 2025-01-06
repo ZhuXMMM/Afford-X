@@ -191,12 +191,12 @@
               <p>
                 In real-world environments, effective robotic interaction transcends mere object identification, emphasizing the understanding of object utilization. This capability, termed <strong>affordance reasoning</strong>, enables robots to infer potential functionalities from physical properties, facilitating diverse tasks from kitchen utensil selection to adaptive tool substitution. However, implementing robust affordance reasoning systems presents two primary challenges: first, the need for high-performance, rapid inference models deployable on robotic development boards, and second, the requirement for a comprehensive knowledge base capable of handling diverse scenarios.
               </p>
-              <p>
-                To address these challenges, we propose a slim end-to-end multimodal framework—<strong><em>Afford-X</em></strong>—that distills knowledge from a label-informed teacher model to a pronoun-only student model (e.g., “something”). This design integrates two specialized modules, Verb Attention (VA) and Bi-Fusion (BF), which jointly emphasize action-centric cues and facilitate fine-grained vision–language alignment. Additionally, we construct large-scale “task–object” pairs using an automated pipeline that augments traditional object detection datasets with minimal manual labeling, thereby expanding the affordance knowledge base.
-              </p>
+              <!-- <p>
+                To address these challenges, we propose a slim end-to-end multimodal framework—<strong><em>Afford-X</em></strong>—that distills knowledge from a label-informed teacher model to a pronoun-only student model (e.g., “something”). Additionally, we construct large-scale “task–object” pairs using an automated pipeline that augments traditional object detection datasets with minimal manual labeling, thereby expanding the affordance knowledge base.
+              </p> -->
               <p><strong>Key Contributions:</strong></p>
               <ul>
-                <li><em>Novel Framework:</em> We introduce <strong>Afford-X</strong>, a slim and efficient model that achieves real-time inference for task-oriented manipulation.</li>
+                <li><em>Novel Framework:</em> We introduce <strong>Afford-X</strong>, a knowledge distillation-based slim and efficient model that achieves real-time inference for task-oriented manipulation.</li>
                 <li><em>Advanced Modules:</em> Verb Attention and Bi-Fusion jointly enhance action-focus and multimodal integration.</li>
                 <li><em>Large-Scale Datasets:</em> Our automated pipeline generates extensive affordance reasoning corpora (COCO-Aff and LVIS-Aff) via GPT-4-based processing.</li>
                 <li><em>Empirical Validation:</em> Experiments in simulated and real-world scenarios show that our approach outperforms conventional detection-based or heavyweight generative models across diverse dynamic tasks.</li>
@@ -209,38 +209,28 @@
 </section>
 
 
-<!-- Video carousel -->
+<!-- Approach Section -->
 <section class="hero is-small">
-  <div class="hero-body">
-    <div class="container">
-      <h2 class="title is-3">Another Carousel</h2>
-      <div id="results-carousel" class="carousel results-carousel">
-        <div class="item item-video1">
-          <video poster="" id="video1" autoplay controls muted loop height="100%">
-            <!-- Your video file here -->
-            <source src="static/videos/carousel1.mp4"
-            type="video/mp4">
-          </video>
-        </div>
-        <div class="item item-video2">
-          <video poster="" id="video2" autoplay controls muted loop height="100%">
-            <!-- Your video file here -->
-            <source src="static/videos/carousel2.mp4"
-            type="video/mp4">
-          </video>
-        </div>
-        <div class="item item-video3">
-          <video poster="" id="video3" autoplay controls muted loop height="100%">\
-            <!-- Your video file here -->
-            <source src="static/videos/carousel3.mp4"
-            type="video/mp4">
-          </video>
+    <div class="hero-body">
+      <div class="container is-max-desktop">
+        <h2 class="title is-3">Approach</h2>
+        <div class="columns is-centered">
+          <div class="column is-half">
+            <img src="static/images/framework.png" alt="Framework" />
+          </div>
+          <p>
+            Our Afford-X pipeline processes visual features from images and textual features from prompts through two key components: a Bi-Fusion (BF) module that aligns text-visual representations via cross-attention, and a Verb Attention (VA) module that emphasizes action-related cues. The enhanced features feed into a transformer encoder-decoder, producing parallel outputs for object detection and segmentation, enabling task-specific object identification even without explicit object labels.
+          </p>
+          <div class="column is-half">
+            <img src="static/images/method_pipeline.png" alt="Method Pipeline" />
+          </div>
+          <p>
+            Our noun-pronoun distillation framework comprises teacher and student encoder-decoders. The teacher learns from explicit object labels (e.g., "couch"), storing noun features in a memory bank, while the student processes pronoun inputs (e.g., "something") guided by these stored prototypes. A soft binary target loss aligns their bounding box predictions, enabling category-agnostic affordance detection while preserving discriminative power.
+          </p>
         </div>
       </div>
     </div>
-  </div>
-</section>
-<!-- End video carousel -->
+  </section>
 
 
 
