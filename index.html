@@ -19,7 +19,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <title>AffordX: Academic Project Page</title>
-  <link rel="icon" type="image/x-icon" href="static/images/favicon.ico">
+  <!-- <link rel="icon" type="image/x-icon" href="static/images/favicon.ico"> -->
   <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro"
   rel="stylesheet">
 
@@ -179,25 +179,39 @@
 
 
 
-<!-- Youtube video -->
+<!-- Intro -->
 <section class="hero is-small is-light">
-  <div class="hero-body">
-    <div class="container">
-      <!-- Paper video. -->
-      <h2 class="title is-3">Video Presentation</h2>
-      <div class="columns is-centered has-text-centered">
-        <div class="column is-four-fifths">
-          
-          <div class="publication-video">
-            <!-- Youtube embed code here -->
-            <iframe src="https://www.youtube.com/embed/JkaxUblCGz0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+    <div class="hero-body">
+      <div class="container">
+        <!-- Paper video. -->
+        <h2 class="title is-3">Introduction</h2>
+        <div class="columns is-centered has-text-centered">
+          <div class="column is-four-fifths">
+            
+            <div class="intro">
+              <p>
+                In many real-world scenarios, effective robotic interaction involves not only identifying <em>what</em> an object is but also <em>how</em> it can be used. This deeper understanding—termed <strong>affordance reasoning</strong>—allows an agent to infer an object’s potential functionalities based on its physical attributes. By capturing such relationships, affordance reasoning supports a diverse range of tasks from selecting the right kitchen utensils for cooking to employing improvised tools when standard options are unavailable. 
+              </p>
+              <p>
+                Nevertheless, implementing robust affordance reasoning in AI systems remains challenging. Large-scale pre-trained language models can in principle cover broad knowledge but are often impractical for on-device deployment due to high computational cost and strict usage policies. Moreover, vision models trained solely on object detection risk overfitting to familiar nouns, overlooking essential action cues. As a result, an affordance-oriented system may wrongly focus on the most visually prominent object (e.g., the “bottle”) instead of identifying the crucial instrument (e.g., the “napkin”) when instructed to “clean the bottle with something.” Such scenarios illustrate the need for methods that effectively integrate textual instructions (actions or verbs) with the visual context of potential objects.
+              </p>
+              <p>
+                To tackle these issues, we propose a lightweight end-to-end multimodal framework—<strong><em>\affordanceModelName{}</em></strong>—that leverages knowledge distillation from a teacher model using explicit object labels to a student model operating purely on pronouns (e.g., “something”). By introducing two specialized modules, Verb Attention (VA) and Bi-Fusion (BF), our architecture emphasizes action-centric cues while enabling fine-grained visual-textual alignment. Moreover, we develop an automated approach to transform conventional object detection datasets into large-scale “task–object” pairs, thus enriching the affordance knowledge base with minimal manual labeling efforts.
+              </p>
+              <p><strong>Key Contributions:</strong></p>
+              <ul style="text-align:left; display:inline-block; margin-left: 2em;">
+                <li><em>Novel Framework:</em> We propose \affordanceModelName{}, a slim, efficient model that achieves real-time inference for task-oriented manipulation.</li>
+                <li><em>Advanced Modules:</em> We integrate Verb Attention and Bi-Fusion strategies to better parse task requirements and capture intricate visual–text relationships.</li>
+                <li><em>Large-Scale Datasets:</em> We introduce two extensive affordance reasoning datasets (\affordanceDatasetName{} and \affordanceDatasetNamelvis{}) by leveraging automated pipelines powered by GPT-4.</li>
+                <li><em>Empirical Validation:</em> Through experiments in simulated and real-world scenarios, our method shows superior performance to traditional detection-based or heavyweight generative models in diverse, dynamic tasks.</li>
+              </ul>
+            </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
-</section>
-<!-- End youtube video -->
+  </section>
+<!-- End Intro -->
 
 
 <!-- Video carousel -->
