@@ -62,7 +62,7 @@
                 <a href="#" target="_blank">Huan-ang Gao</a>,
               </span>
               <span class="author-block">
-                <a href="https://yzhu.io/" target="_blank">Yixin Zhu</a>,
+                <a href="https://yzhu.io/" target="_blank">Yixin Zhu</a>
                 <i class="fas fa-envelope ml-1"></i>,
               </span>
               <span class="author-block">
@@ -72,9 +72,9 @@
             </div>
 
             <div class="is-size-5 publication-authors">
-              <span class="author-block">Institute for AI, Peking University<br>Dept of CS, Hong Kong University of Science and Technology<br>Institute for AI Industry Research, Tsinghua University</span>
+              <span class="author-block">Institute for AI, Peking University<br>Dept of CSE, Hong Kong University of Science and Technology<br>Institute for AI Industry Research, Tsinghua University</span>
               <span class="eql-cntrb"><small style="font-size: 0.8em;"><br><sup>*</sup>Indicates Equal Contribution</small></span>
-              <span class="corr-author"><small style="font-size: 0.8em;"><i class="fas fa-envelope ml-1"></i>Corresponding Author </small></span>
+              <span class="corr-author"><small style="font-size: 0.8em;"><i class="fas fa-envelope ml-1"></i> Corresponding Author </small></span>
             </div>
 
             <div class="column has-text-centered">
@@ -151,7 +151,7 @@
         <h2 class="title is-3">Abstract</h2>
         <div class="content has-text-justified">
           <p>
-            Object affordance reasoning, the ability to infer object functionalities based on physical properties, is fundamental for task-oriented planning and activities in both humans and \ac{ai}. This capability, required for planning and executing daily activities in a task-oriented manner, relies on commonsense knowledge of object physics and functionalities, extending beyond simple object recognition. Current computational models for affordance reasoning from perception lack generalizability, limiting their applicability in novel scenarios. Meanwhile, comprehensive \acp{llm} with emerging reasoning capabilities are challenging to deploy on local devices for task-oriented manipulations. Here, we introduce \affordanceDatasetNamelvis{}, a large-scale dataset comprising 1,496 tasks and 897k images, designed to enhance the generalizability of affordance reasoning from perception. Utilizing this dataset, we develop \affordanceModelName{}, an end-to-end trainable affordance reasoning model that incorporates Verb Attention and Bi-Fusion modules to improve multi-modal understanding. This model achieves up to a 25.5\% performance improvement on unseen categories and tasks, while maintaining a compact 187M parameter size and inferring nearly 50 times faster than the GPT-4V API. Our work demonstrates the potential for efficient, generalizable affordance reasoning models that can be deployed on local devices for task-oriented manipulations. We showcase \affordanceModelName{}'s effectiveness in enabling task-oriented manipulations for robots across various tasks and environments, underscoring its efficiency and broad implications for advancing robotics and \ac{ai} systems in real-world applications.
+            Object affordance reasoning, the ability to infer object functionalities based on physical properties, is fundamental for task-oriented planning and activities in both humans and AI. This capability, required for planning and executing daily activities in a task-oriented manner, relies on commonsense knowledge of object physics and functionalities, extending beyond simple object recognition. Current computational models for affordance reasoning from perception lack generalizability, limiting their applicability in novel scenarios. Meanwhile, comprehensive \acp{llm} with emerging reasoning capabilities are challenging to deploy on local devices for task-oriented manipulations. Here, we introduce LVIS-Aff, a large-scale dataset comprising 1,496 tasks and 897k images, designed to enhance the generalizability of affordance reasoning from perception. Utilizing this dataset, we develop Afford-X, an end-to-end trainable affordance reasoning model that incorporates Verb Attention and Bi-Fusion modules to improve multi-modal understanding. This model achieves up to a 25.5\% performance improvement on unseen categories and tasks, while maintaining a compact 187M parameter size and inferring nearly 50 times faster than the GPT-4V API. Our work demonstrates the potential for efficient, generalizable affordance reasoning models that can be deployed on local devices for task-oriented manipulations. We showcase Afford-X's effectiveness in enabling task-oriented manipulations for robots across various tasks and environments, underscoring its efficiency and broad implications for advancing robotics and AI systems in real-world applications.
           </p>
         </div>
       </div>
@@ -161,44 +161,20 @@
 <!-- End paper abstract -->
 
 
-<!-- Image carousel -->
+<!-- Article Teaser Section -->
 <section class="hero is-small">
-  <div class="hero-body">
-    <div class="container">
-      <div id="results-carousel" class="carousel results-carousel">
-       <div class="item">
-        <!-- Your image here -->
-        <img src="static/images/carousel1.jpg" alt="MY ALT TEXT"/>
-        <h2 class="subtitle has-text-centered">
-          First image description.
-        </h2>
+    <div class="hero-body">
+      <div class="container is-max-desktop">
+        <!-- Teaser -->
+        <img src="static/images/teaser.jpg" alt="Article Teaser" />
+        
+        <!-- description -->
+        <div class="content has-text-centered">
+            <p><strong>Affordance reasoning for task-oriented manipulation.</strong> Afford-X provides efficient visual affordance reasoning through: (a) two comprehensive datasets---COCO-Aff (686k images, 1,144 tasks, 80 categories) and LVIS-Aff (897k images, 1,496 tasks, 1,064 categories); (b) real-time processing (2.38 FPS) with a compact 187M-parameter architecture generating bounding boxes and object masks; (c) robust generalization demonstrated through task-specific object selection and multi-object identification at 0.7 confidence threshold; (d) integration with robotic systems for simulated task-oriented manipulation.</p>
+        </div>
       </div>
-      <div class="item">
-        <!-- Your image here -->
-        <img src="static/images/carousel2.jpg" alt="MY ALT TEXT"/>
-        <h2 class="subtitle has-text-centered">
-          Second image description.
-        </h2>
-      </div>
-      <div class="item">
-        <!-- Your image here -->
-        <img src="static/images/carousel3.jpg" alt="MY ALT TEXT"/>
-        <h2 class="subtitle has-text-centered">
-         Third image description.
-       </h2>
-     </div>
-     <div class="item">
-      <!-- Your image here -->
-      <img src="static/images/carousel4.jpg" alt="MY ALT TEXT"/>
-      <h2 class="subtitle has-text-centered">
-        Fourth image description.
-      </h2>
     </div>
-  </div>
-</div>
-</div>
-</section>
-<!-- End image carousel -->
+  </section>
 
 
 
