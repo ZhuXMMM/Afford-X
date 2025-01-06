@@ -163,23 +163,25 @@
     <div class="hero-body">
       <div class="container is-max-desktop">
         <div class="columns is-vcentered is-variable is-6">
-          <div class="column is-10">
-            <figure class="image box">
-              <img src="static/images/teaser.png" alt="Article Teaser" />
+          <!-- Left Column: Teaser Image -->
+          <div class="column is-5">
+            <figure class="image is-fullwidth box">
+              <img src="static/images/teaser.png" alt="Article Teaser" style="width:100%; height:auto;">
             </figure>
           </div>
-          <div class="column is-7 content has-text-centered margin-left: 2em;">
+          <!-- Right Column: Description -->
+          <div class="column is-7 content has-text-centered">
             <p class="title is-4 has-text-white">
               <strong>Affordance reasoning for task-oriented manipulation</strong>
             </p>
-            <p class="subtitle is-6 has-text-light">
-              Afford-X provides efficient visual affordance reasoning through: 
-              (a) two comprehensive datasets—COCO-Aff (686k images, 1,144 tasks, 
-              80 categories) and LVIS-Aff (897k images, 1,496 tasks, 1,064 categories); 
-              (b) real-time processing (2.38 FPS) with a compact 187M-parameter 
-              architecture generating bounding boxes and object masks; 
-              (c) robust generalization demonstrated through task-specific object 
-              selection and multi-object identification at a 0.7 confidence threshold; 
+            <p class="subtitle is-6 has-text-light" style="text-align: left;">
+              Afford-X provides efficient visual affordance reasoning through: <br />
+              (a) two comprehensive datasets—COCO-Aff (686k images, 1,144 tasks, 80 categories) 
+              and LVIS-Aff (897k images, 1,496 tasks, 1,064 categories); <br />
+              (b) real-time processing (2.38 FPS) with a compact 187M-parameter architecture generating 
+              bounding boxes and object masks; <br />
+              (c) robust generalization demonstrated through task-specific object selection and 
+              multi-object identification at a 0.7 confidence threshold; <br />
               (d) integration with robotic systems for simulated task-oriented manipulation.
             </p>
           </div>
@@ -194,27 +196,31 @@
   <section class="hero is-small is-light">
     <div class="hero-body">
       <div class="container is-max-desktop">
-        <!-- Paper video. -->
         <h2 class="title is-3 has-text-centered">Motivation</h2>
         <div class="columns is-centered is-multiline">
-          <div class="column is-12">
+          <div class="column is-8">
             <div class="intro content box">
               <p>
-                In real-world environments, effective robotic interaction transcends mere object identification, 
-                emphasizing the understanding of object utilization. This capability, termed 
-                <strong>affordance reasoning</strong>, enables robots to infer potential functionalities from 
-                physical properties, facilitating diverse tasks from kitchen utensil selection to adaptive tool 
-                substitution. However, implementing robust affordance reasoning systems presents two primary 
-                challenges: first, the need for high-performance, rapid inference models deployable on robotic 
-                development boards, and second, the requirement for a comprehensive knowledge base capable of 
+                In real-world environments, effective robotic interaction transcends mere object identification,
+                emphasizing the understanding of object utilization. This capability, termed
+                <strong>affordance reasoning</strong>, enables robots to infer potential functionalities
+                from physical properties, facilitating diverse tasks from kitchen utensil selection to adaptive
+                tool substitution. However, implementing robust affordance reasoning systems presents two primary
+                challenges: first, the need for high-performance, rapid inference models deployable on robotic
+                development boards, and second, the requirement for a comprehensive knowledge base capable of
                 handling diverse scenarios.
               </p>
               <p><strong>Key Contributions:</strong></p>
               <ul style="list-style-type: disc; margin-left: 2em;">
-                <li><em>Novel Framework:</em> We introduce <strong>Afford-X</strong>, a knowledge distillation-based slim and efficient model that achieves real-time inference for task-oriented manipulation.</li>
-                <li><em>Advanced Modules:</em> Verb Attention and Bi-Fusion jointly enhance action-focus and multimodal integration.</li>
-                <li><em>Large-Scale Datasets:</em> Our automated pipeline generates extensive affordance reasoning corpora (COCO-Aff and LVIS-Aff) via GPT-4-based processing.</li>
-                <li><em>Empirical Validation:</em> Experiments in simulated and real-world scenarios show that our approach outperforms conventional detection-based or heavyweight generative models across diverse dynamic tasks.</li>
+                <li><em>Novel Framework:</em> We introduce <strong>Afford-X</strong>, a knowledge distillation-based slim
+                  and efficient model that achieves real-time inference for task-oriented manipulation.</li>
+                <li><em>Advanced Modules:</em> Verb Attention and Bi-Fusion jointly enhance action-focus and
+                  multimodal integration.</li>
+                <li><em>Large-Scale Datasets:</em> Our automated pipeline generates extensive affordance reasoning
+                  corpora (COCO-Aff and LVIS-Aff) via GPT-4-based processing.</li>
+                <li><em>Empirical Validation:</em> Experiments in simulated and real-world scenarios show that our
+                  approach outperforms conventional detection-based or heavyweight generative models across diverse
+                  dynamic tasks.</li>
               </ul>
             </div>
           </div>
@@ -233,19 +239,22 @@
   
         <!-- First row: BF + VA modules -->
         <div class="columns is-vcentered is-variable is-7">
-          <div class="column is-12">
-            <figure class="image box">
-              <img src="static/images/method_pipeline.png" alt="Framework" />
+          <!-- Image -->
+          <div class="column is-6">
+            <figure class="image is-fullwidth box">
+              <img src="static/images/method_pipeline.png" alt="Framework"
+                   style="width:100%; height:auto;">
             </figure>
           </div>
+          <!-- Text -->
           <div class="column is-6">
             <div class="content">
               <p style="text-align: left;">
-                Our Afford-X pipeline processes visual features from images and textual features from prompts 
-                through two key components: a <strong>Bi-Fusion (BF)</strong> module that aligns text-visual 
-                representations via cross-attention, and a <strong>Verb Attention (VA)</strong> module that 
-                emphasizes action-related cues. The enhanced features feed into a transformer encoder-decoder, 
-                producing parallel outputs for object detection and segmentation, enabling task-specific object 
+                Our Afford-X pipeline processes visual features from images and textual features from prompts
+                through two key components: a <strong>Bi-Fusion (BF)</strong> module that aligns text-visual
+                representations via cross-attention, and a <strong>Verb Attention (VA)</strong> module that
+                emphasizes action-related cues. The enhanced features feed into a transformer encoder-decoder,
+                producing parallel outputs for object detection and segmentation, enabling task-specific object
                 identification even without explicit object labels.
               </p>
             </div>
@@ -256,20 +265,23 @@
   
         <!-- Second row: Distillation Framework -->
         <div class="columns is-vcentered is-variable is-7">
+          <!-- Text -->
           <div class="column is-6">
             <div class="content">
               <p style="text-align: left;">
-                Our noun-pronoun distillation framework comprises teacher and student encoder-decoders. The 
-                teacher learns from explicit object labels (e.g., "couch"), storing noun features in a memory 
-                bank, while the student processes pronoun inputs (e.g., "something") guided by these stored 
-                prototypes. A soft binary target loss aligns their bounding box predictions, enabling 
+                Our noun-pronoun distillation framework comprises teacher and student encoder-decoders. The
+                teacher learns from explicit object labels (e.g., "couch"), storing noun features in a memory
+                bank, while the student processes pronoun inputs (e.g., "something") guided by these stored
+                prototypes. A soft binary target loss aligns their bounding box predictions, enabling
                 category-agnostic affordance detection while preserving discriminative power.
               </p>
             </div>
           </div>
-          <div class="column is-12">
-            <figure class="image box">
-              <img src="static/images/framework.png" alt="Method Pipeline" />
+          <!-- Image -->
+          <div class="column is-6">
+            <figure class="image is-fullwidth box">
+              <img src="static/images/framework.png" alt="Method Pipeline"
+                   style="width:100%; height:auto;">
             </figure>
           </div>
         </div>
@@ -285,24 +297,27 @@
     <div class="hero-body">
       <div class="container is-max-desktop">
         <h2 class="title is-3 has-text-centered">Dataset Construction</h2>
-        
+  
         <div class="columns is-vcentered is-variable is-7">
-          <div class="column is-12">
-            <figure class="image box">
-              <img src="static/images/dataset_construction.png" alt="Dataset Construction" />
+          <!-- Image -->
+          <div class="column is-6">
+            <figure class="image is-fullwidth box">
+              <img src="static/images/dataset_construction.png" alt="Dataset Construction"
+                   style="width:100%; height:auto;">
             </figure>
           </div>
+          <!-- Text -->
           <div class="column is-6">
             <div class="content">
               <p style="text-align: left;">
-                Our automated pipeline converts conventional object detection annotations into large-scale 
-                affordance datasets with minimal human intervention. The process starts by generating a set of 
-                diverse task prompts for each object category (step 1), then matches these prompts to relevant 
-                categories using commonsense preference rankings (step 2). Next, a quality inspection step filters 
-                out inappropriate or duplicative pairs (step 3). Finally, image sampling is conducted to ensure 
-                balanced coverage of different categories and layouts (step 4), producing comprehensive 
-                affordance-task pairs. This systematic approach scales effectively, covering myriad task-object 
-                relationships while maintaining high data consistency.
+                Our automated pipeline converts conventional object detection annotations into large-scale
+                affordance datasets with minimal human intervention. The process starts by generating a set of
+                diverse task prompts for each object category (step 1), then matches these prompts to relevant
+                categories using commonsense preference rankings (step 2). Next, a quality inspection step
+                filters out inappropriate or duplicative pairs (step 3). Finally, image sampling is conducted
+                to ensure balanced coverage of different categories and layouts (step 4), producing
+                comprehensive affordance-task pairs. This systematic approach scales effectively, covering
+                myriad task-object relationships while maintaining high data consistency.
               </p>
             </div>
           </div>
@@ -318,23 +333,26 @@
     <div class="hero-body">
       <div class="container is-max-desktop">
         <h2 class="title is-3 has-text-centered">Embodied Affordance Reasoning</h2>
-        
+  
         <div class="columns is-vcentered is-variable is-7">
-          <div class="column is-12">
-            <figure class="image box">
-              <img src="static/images/infra_compressed.png" alt="Embodied Affordance Reasoning" />
+          <!-- Image -->
+          <div class="column is-6">
+            <figure class="image is-fullwidth box">
+              <img src="static/images/infra_compressed.png" alt="Embodied Affordance Reasoning"
+                   style="width:100%; height:auto;">
             </figure>
           </div>
+          <!-- Text -->
           <div class="column is-6">
             <div class="content">
               <p style="text-align: left;">
-                To deploy Afford-X in real-world or simulated robotics environments, we adopt a system 
-                architecture that begins with RGB image processing for object masks (a). Optionally, the robot 
-                may build a geometric map (b) for robust path planning. Based on these perceptual outputs, the 
-                robot positions itself to optimize viewpoint and executes the planned manipulation (c). For 
-                multiple sub-tasks (e.g., "build up a space for working"), the system recursively applies the 
-                affordance-driven selection and action cycle (d). This pipeline enables autonomous identification 
-                and utilization of objects in dynamic, cluttered environments.
+                To deploy Afford-X in real-world or simulated robotics environments, we adopt a system
+                architecture that begins with RGB image processing for object masks (a). Optionally, the robot
+                may build a geometric map (b) for robust path planning. Based on these perceptual outputs, the
+                robot positions itself to optimize viewpoint and executes the planned manipulation (c). For
+                multiple sub-tasks (e.g., "build up a space for working"), the system recursively applies the
+                affordance-driven selection and action cycle (d). This pipeline enables autonomous
+                identification and utilization of objects in dynamic, cluttered environments.
               </p>
             </div>
           </div>
@@ -368,8 +386,8 @@
           <div class="content has-text-centered">
             <p>
               This page was built using the <a href="https://github.com/eliahuhorwitz/Academic-project-page-template" target="_blank">Academic Project Page Template</a> which was adopted from the <a href="https://nerfies.github.io" target="_blank">Nerfies</a> project page.
-              You are free to borrow the source code of this website, we just ask that you link back to this page in the footer. <br> 
-              This website is licensed under a 
+              You are free to borrow the source code of this website, we just ask that you link back to this page in the footer. <br>
+              This website is licensed under a
               <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/" target="_blank">Creative
               Commons Attribution-ShareAlike 4.0 International License</a>.
             </p>
