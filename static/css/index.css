@@ -149,3 +149,11 @@ body {
 .github-icon:hover i {
   color: #007BFF;      
 }
+
+.content img {
+  margin-bottom: 2rem;
+}
+
+.content p {
+  margin-top: 1.5rem;
+}
