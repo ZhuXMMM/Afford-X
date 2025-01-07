@@ -164,7 +164,7 @@
       <div class="container is-max-desktop">
         <!-- 上方放置图片 -->
         <div class="columns is-centered">
-          <div class="column is-10">
+          <div class="column is-12">
             <figure class="image is-fullwidth box">
               <img src="static/images/teaser.png" alt="Article Teaser" style="width:100%; height:auto;">
             </figure>
@@ -172,18 +172,18 @@
         </div>
         <!-- 下方放置文字 -->
         <div class="columns is-centered">
-          <div class="column is-10 content has-text-centered">
+          <div class="column is-12 content has-text-centered">
             <p class="title is-4 has-text-white">
               <strong>Affordance reasoning for task-oriented manipulation</strong>
             </p>
             <p class="subtitle is-6 has-text-light" style="text-align: left;">
-              Afford-X provides efficient visual affordance reasoning through:<br />
+              Afford-X provides efficient visual affordance reasoning through:
               (a) two comprehensive datasets—COCO-Aff (686k images, 1,144 tasks, 80 categories) 
-              and LVIS-Aff (897k images, 1,496 tasks, 1,064 categories);<br />
+              and LVIS-Aff (897k images, 1,496 tasks, 1,064 categories);
               (b) real-time processing (2.38 FPS) with a compact 187M-parameter architecture generating 
-              bounding boxes and object masks;<br />
+              bounding boxes and object masks;
               (c) robust generalization demonstrated through task-specific object selection and 
-              multi-object identification at a 0.7 confidence threshold;<br />
+              multi-object identification at a 0.7 confidence threshold;
               (d) integration with robotic systems for simulated task-oriented manipulation.
             </p>
           </div>
@@ -238,54 +238,56 @@
       <div class="container is-max-desktop">
         <h2 class="title is-3 has-text-centered">Framework</h2>
   
-        <!-- First row: BF + VA modules -->
-        <div class="columns is-vcentered is-variable is-7">
-          <!-- Image -->
-          <div class="column is-8">
+        <!-- First row: BF + VA modules, now vertical -->
+        <div class="columns is-variable is-7 is-centered">
+            <!-- Image (full-width) -->
+            <div class="column is-10">
             <figure class="image is-fullwidth box">
-              <img src="static/images/method_pipeline.png" alt="Framework"
-                   style="width:100%; height:auto;">
+                <img src="static/images/method_pipeline.png" alt="Framework" style="width:100%; height:auto;">
             </figure>
-          </div>
-          <!-- Text -->
-          <div class="column is-4">
-            <div class="content">
-              <p style="text-align: left;">
+            </div>
+        </div>
+        
+        <div class="columns is-variable is-7 is-centered">
+            <!-- Text (full-width) -->
+            <div class="column is-10">
+            <div class="content" style="text-align: left;">
+                <p>
                 Our Afford-X pipeline processes visual features from images and textual features from prompts
                 through two key components: a <strong>Bi-Fusion (BF)</strong> module that aligns text-visual
                 representations via cross-attention, and a <strong>Verb Attention (VA)</strong> module that
                 emphasizes action-related cues. The enhanced features feed into a transformer encoder-decoder,
                 producing parallel outputs for object detection and segmentation, enabling task-specific object
                 identification even without explicit object labels.
-              </p>
+                </p>
             </div>
-          </div>
+            </div>
         </div>
   
         <hr class="dropdown-divider" />
   
         <!-- Second row: Distillation Framework -->
-        <div class="columns is-vcentered is-variable is-7">
-          <!-- Text -->
-          <div class="column is-6">
-            <div class="content">
-              <p style="text-align: left;">
-                Our noun-pronoun distillation framework comprises teacher and student encoder-decoders. The
-                teacher learns from explicit object labels (e.g., "couch"), storing noun features in a memory
-                bank, while the student processes pronoun inputs (e.g., "something") guided by these stored
-                prototypes. A soft binary target loss aligns their bounding box predictions, enabling
-                category-agnostic affordance detection while preserving discriminative power.
-              </p>
+        <div class="columns is-vcentered is-variable is-11">
+            <!-- Image -->
+            <div class="column is-6">
+                <figure class="image is-fullwidth box">
+                    <img src="static/images/framework.png" alt="Method Pipeline"
+                        style="width:100%; height:auto;">
+                </figure>
+            </div>
+            <!-- Text -->
+            <div class="column is-10">
+              <div class="content">
+                <p style="text-align: left;">
+                  Our noun-pronoun distillation framework comprises teacher and student encoder-decoders. The
+                  teacher learns from explicit object labels (e.g., "couch"), storing noun features in a memory
+                  bank, while the student processes pronoun inputs (e.g., "something") guided by these stored
+                  prototypes. A soft binary target loss aligns their bounding box predictions, enabling
+                  category-agnostic affordance detection while preserving discriminative power.
+                </p>
+              </div>
             </div>
           </div>
-          <!-- Image -->
-          <div class="column is-6">
-            <figure class="image is-fullwidth box">
-              <img src="static/images/framework.png" alt="Method Pipeline"
-                   style="width:100%; height:auto;">
-            </figure>
-          </div>
-        </div>
   
       </div>
     </div>
@@ -299,18 +301,20 @@
       <div class="container is-max-desktop">
         <h2 class="title is-3 has-text-centered">Dataset Construction</h2>
   
-        <div class="columns is-vcentered is-variable is-7">
-          <!-- Image -->
-          <div class="column is-6">
+        <!-- Row for Image -->
+        <div class="columns is-centered">
+          <div class="column is-10">
             <figure class="image is-fullwidth box">
-              <img src="static/images/dataset_construction.png" alt="Dataset Construction"
-                   style="width:100%; height:auto;">
+              <img src="static/images/dataset_construction.png" alt="Dataset Construction" style="width:100%; height:auto;">
             </figure>
           </div>
-          <!-- Text -->
-          <div class="column is-6">
-            <div class="content">
-              <p style="text-align: left;">
+        </div>
+  
+        <!-- Row for Text -->
+        <div class="columns is-centered">
+          <div class="column is-10">
+            <div class="content" style="text-align: left;">
+              <p>
                 Our automated pipeline converts conventional object detection annotations into large-scale
                 affordance datasets with minimal human intervention. The process starts by generating a set of
                 diverse task prompts for each object category (step 1), then matches these prompts to relevant
@@ -323,6 +327,7 @@
             </div>
           </div>
         </div>
+        
       </div>
     </div>
   </section>
@@ -335,16 +340,16 @@
       <div class="container is-max-desktop">
         <h2 class="title is-3 has-text-centered">Embodied Affordance Reasoning</h2>
   
-        <div class="columns is-vcentered is-variable is-7">
+        <div class="columns is-vcentered is-variable is-15">
           <!-- Image -->
-          <div class="column is-6">
+          <div class="column is-10">
             <figure class="image is-fullwidth box">
               <img src="static/images/infra_compressed.png" alt="Embodied Affordance Reasoning"
                    style="width:100%; height:auto;">
             </figure>
           </div>
           <!-- Text -->
-          <div class="column is-6">
+          <div class="column is-4">
             <div class="content">
               <p style="text-align: left;">
                 To deploy Afford-X in real-world or simulated robotics environments, we adopt a system
