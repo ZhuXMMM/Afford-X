@@ -267,19 +267,20 @@
         <hr class="dropdown-divider" />
   
         <!-- Second row: Distillation Framework -->
-        <div class="columns is-vcentered is-variable is-11">
-            <!-- Image -->
-            <div class="column is-6">
-                <figure class="image is-fullwidth box">
-                    <img src="static/images/framework.png" alt="Method Pipeline"
-                        style="width:100%; height:auto;">
-                </figure>
-            </div>
-
-            <!-- Text -->
+        <div class="columns is-centered">
+            <!-- Image (full-width) -->
             <div class="column is-10">
-              <div class="content">
-                <p style="text-align: left;">
+              <figure class="image is-fullwidth box">
+                <img src="static/images/framework.png" alt="Method Pipeline" style="width:100%; height:auto;">
+              </figure>
+            </div>
+          </div>
+          
+          <div class="columns is-centered">
+            <!-- Text (full-width) -->
+            <div class="column is-10">
+              <div class="content" style="text-align: left;">
+                <p>
                   Our noun-pronoun distillation framework comprises teacher and student encoder-decoders. The
                   teacher learns from explicit object labels (e.g., "couch"), storing noun features in a memory
                   bank, while the student processes pronoun inputs (e.g., "something") guided by these stored
@@ -340,20 +341,23 @@
     <div class="hero-body">
       <div class="container is-max-desktop">
         <h2 class="title is-3 has-text-centered">Embodied Affordance Reasoning</h2>
-  
-        <div class="columns is-vcentered is-variable is-11">
-          <!-- Image -->
+        
+        <!-- 上方放置图片 -->
+        <div class="columns is-centered">
           <div class="column is-10">
             <figure class="image is-fullwidth box">
-              <img src="static/images/infra_compressed.png" alt="Embodied Affordance Reasoning"
+              <img src="static/images/infra_compressed.png"
+                   alt="Embodied Affordance Reasoning"
                    style="width:100%; height:auto;">
             </figure>
           </div>
-
-          <!-- Text -->
+        </div>
+        
+        <!-- 下方放置文字 -->
+        <div class="columns is-centered">
           <div class="column is-10">
-            <div class="content">
-              <p style="text-align: left;">
+            <div class="content" style="text-align: left;">
+              <p>
                 To deploy Afford-X in real-world or simulated robotics environments, we adopt a system
                 architecture that begins with RGB image processing for object masks (a). Optionally, the robot
                 may build a geometric map (b) for robust path planning. Based on these perceptual outputs, the
@@ -365,6 +369,7 @@
             </div>
           </div>
         </div>
+        
       </div>
     </div>
   </section>
