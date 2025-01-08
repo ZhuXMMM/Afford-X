@@ -157,3 +157,10 @@ body {
 .content p {
   margin-top: 1.5rem;
 }
+
+/* 保证图片最大宽度为容器的100%，高度自适应 */
+figure.image img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
