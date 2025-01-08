@@ -39,23 +39,40 @@
 
   <!-- 自定义高亮样式 -->
   <style>
-    /* 高亮卡片的样式：使用 Bulma 的 info 背景色，并让文字变白等 */
+    /* 1) 卡片高亮：用 box-shadow、圆角使其突出，而不改变原背景与文字色。 */
     .highlighted-card {
-      background-color: #209cee !important; /* Bulma的 is-info 背景色 */
-      color: #fff !important;
-      border: 2px solid #fff !important;
+      position: relative;
+      z-index: 10; /* 让其层级更高 */
+      border-radius: 6px; /* 与 box 的默认圆角一致或自定义 */
+      box-shadow: 0 0 0 4px #209cee, 0 6px 16px rgba(0, 0, 0, 0.2);
+      transition: box-shadow 0.3s ease;
     }
-    .highlighted-card h3.title,
-    .highlighted-card p.subtitle {
-      color: #fff !important;
+    /* 鼠标悬浮时可再加一层阴影(可选) */
+    .highlighted-card:hover {
+      box-shadow: 0 0 0 4px #209cee, 0 8px 20px rgba(0, 0, 0, 0.25);
     }
-    /* 高亮gif的边框 */
-    .highlighted-gif {
-      border: 4px solid #209cee; /* 同样的 info 色 */
+
+    /* 2) 下方gif的外围容器高亮：与卡片相同的 box-shadow、圆角、再加点padding使之更大一点 */
+    .highlighted-gif-wrapper {
+      display: inline-block;
+      position: relative;
+      z-index: 10;
       border-radius: 6px;
-      margin-top: 1rem;
+      box-shadow: 0 0 0 4px #209cee, 0 6px 16px rgba(0, 0, 0, 0.2);
+      padding: 0.5rem; /* 让外框比图片稍大 */
+      transition: box-shadow 0.3s ease;
+    }
+
+    /* .highlighted-gifWrapper 在 hovered 状态下（可选） */
+    .highlighted-gif-wrapper:hover {
+      box-shadow: 0 0 0 4px #209cee, 0 8px 20px rgba(0, 0, 0, 0.25);
+    }
+
+    /* 3) 图片默认宽度为 100%，JS里会根据需求再覆盖 style.width = '50%'/'66%'/'88%' */
+    #dataset-gif {
       max-width: 100%;
       height: auto;
+      border-radius: 4px; 
     }
   </style>
 </head>
@@ -278,13 +295,12 @@
         </div>
       </div>
 
-      <!-- 用于显示对应gif的区域 -->
+      <!-- 用于显示对应gif的外围高亮容器 -->
       <div class="columns is-centered" style="margin-top: 2rem;">
         <div class="column is-8 has-text-centered">
-          <figure>
-            <!-- 这个img的src会通过JS轮播脚本自动更新 -->
-            <img id="dataset-gif" class="highlighted-gif" src="" alt="Dataset Visualization GIF">
-          </figure>
+          <div id="gif-wrapper" class="">
+            <img id="dataset-gif" src="" alt="Dataset Visualization GIF">
+          </div>
         </div>
       </div>
     </div>
@@ -755,37 +771,52 @@
 
 <!-- JS脚本放在页面底部，控制数据集卡片与gif的轮播 -->
 <script>
-  // 数据集配置
+  // 数据集配置：加上 scale 字段以控制三张图的相对宽度
   var datasets = [
     {
       name: "COCO-Tasks",
       cardId: "coco-tasks-card",
-      gifSrc: "static/images/output_gifs/cocotasks/result.gif"
+      gifSrc: "static/images/output_gifs/cocotasks/result.png",
+      scale: "50%"
     },
     {
       name: "COCO-Aff",
       cardId: "coco-aff-card",
-      gifSrc: "static/images/output_gifs/cocoaff/result.gif"
+      gifSrc: "static/images/output_gifs/cocoaff/result.png",
+      scale: "66%"
     },
     {
       name: "LVIS-Aff",
       cardId: "lvis-aff-card",
-      gifSrc: "static/images/output_gifs/lvisaff/result.gif"
+      gifSrc: "static/images/output_gifs/lvisaff/result.png",
+      scale: "88%"
     }
   ];
 
   var currentIndex = 0;
 
   function highlightDataset(index) {
-    // 移除所有卡片的高亮
+    // 先移除所有卡片的高亮
     datasets.forEach(function(dataset){
       document.getElementById(dataset.cardId).classList.remove("highlighted-card");
     });
     // 为当前数据集卡片添加高亮
     var selected = datasets[index];
     document.getElementById(selected.cardId).classList.add("highlighted-card");
+
     // 更新下方gif
-    document.getElementById("dataset-gif").src = selected.gifSrc;
+    var gifElem = document.getElementById("dataset-gif");
+    gifElem.src = selected.gifSrc;
+    gifElem.style.width = selected.scale; // 让图显示为对应的百分比
+
+    // 高亮下方容器
+    var gifWrapper = document.getElementById("gif-wrapper");
+    // 可以先移除后再添加，保证在每次切换时重置动画
+    gifWrapper.classList.remove("highlighted-gif-wrapper");
+    // 这里延时 1ms 再添加，可在切换时有闪动效果，也可直接添加
+    setTimeout(function(){
+      gifWrapper.classList.add("highlighted-gif-wrapper");
+    }, 1);
   }
 
   function nextDataset() {
@@ -796,8 +827,8 @@
   // 页面加载完后自动开始轮播
   window.addEventListener("load", function(){
     highlightDataset(currentIndex);
-    // 每隔3秒切换下一个数据集
-    setInterval(nextDataset, 3000);
+    // 每隔4秒切换下一个数据集
+    setInterval(nextDataset, 4000);
   });
 </script>
 
