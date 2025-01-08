@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <meta charset="""utf-8">
+  <meta charset="utf-8">
   <!-- Meta tags for social media banners -->
-  <meta name="""description" content="A Generalizable and Slim Affordance Reasoning Framework for Task-oriented Manipulation">
-  <meta property="""og:title" content="""AffordX: A Generalizable and Slim Affordance Reasoning Framework for Task-oriented Manipulation"/>
-  <meta property="""og:description" content="""Official implementation of AffordX, a framework for task-oriented manipulation with enhanced generalizability and efficiency."/>
+  <meta name="description" content="A Generalizable and Slim Affordance Reasoning Framework for Task-oriented Manipulation">
+  <meta property="og:title" content="AffordX: A Generalizable and Slim Affordance Reasoning Framework for Task-oriented Manipulation"/>
+  <meta property="og:description" content="Official implementation of AffordX, a framework for task-oriented manipulation with enhanced generalizability and efficiency."/>
   <meta property="og:url" content="https://mywebsite.com"/>
   <meta property="og:image" content="static/images/teaser.png" />
   <meta property="og:image:width" content="1200"/>
@@ -264,74 +264,67 @@
 
 <!-- Visualization Section -->
 <section class="section is-light">
-    <div class="container is-max-desktop">
-      <h2 class="title is-3 has-text-centered">Visualization of Affordance Reasoning</h2>
-      
+  <div class="container is-max-desktop">
+    <h2 class="title is-3 has-text-centered">Visualization of Affordance Reasoning</h2>
+    <div class="columns is-multiline is-centered" style="margin-top: 2rem;">
       <!-- COCO-Tasks -->
-      <div class="has-text-centered" style="width:50%; margin: 20px auto;">
+      <div class="column is-one-third has-text-centered">
         <h3 class="title is-4">COCO-Tasks</h3>
-        <figure class="image">
-          <img src="static/images/output_gifs/cocotasks/result.gif" alt="COCO-Tasks Visualization" style="max-width:80%;">
+        <figure class="image is-4by3">
+          <img src="static/images/output_gifs/cocotasks/result.gif" 
+               alt="COCO-Tasks Visualization">
         </figure>
       </div>
-      
       <!-- COCO-Aff -->
-      <div class="has-text-centered" style="width:50%; margin: 20px auto;">
+      <div class="column is-one-third has-text-centered">
         <h3 class="title is-4">COCO-Aff</h3>
-        <figure class="image">
-          <img src="static/images/output_gifs/cocoaff/result.gif" alt="COCO-Aff Visualization" style="max-width:80%;">
+        <figure class="image is-4by3">
+          <img src="static/images/output_gifs/cocoaff/result.gif" 
+               alt="COCO-Aff Visualization">
         </figure>
       </div>
-      
-      <!-- COCO-LVIS -->
-      <div class="has-text-centered" style="width:50%; margin: 20px auto;">
-        <h3 class="title is-4">COCO-LVIS</h3>
-        <figure class="image">
-          <img src="static/images/output_gifs/lvisaff/result.gif" alt="COCO-LVIS Visualization" style="max-width:80%;">
+      <!-- LVIS-Aff -->
+      <div class="column is-one-third has-text-centered">
+        <h3 class="title is-4">LVIS-Aff</h3>
+        <figure class="image is-4by3">
+          <img src="static/images/output_gifs/lvisaff/result.gif" 
+               alt="LVIS-Aff Visualization">
         </figure>
       </div>
-      
     </div>
-  </section>
-  <!-- End Visualization Section -->
+  </div>
+</section>
+<!-- End Visualization Section -->
 
-  <!-- Intro -->
-  <section class="hero is-small is-light">
-    <div class="hero-body">
-      <div class="container is-max-desktop">
-        <h2 class="title is-3 has-text-centered">Key Contributions</h2>
-        <div class="columns is-centered is-multiline">
-          <div class="column is-12">
-            <div class="intro content box">
-              <!-- <p>
-                In real-world environments, effective robotic interaction transcends mere object identification,
-                emphasizing the understanding of object utilization. This capability, termed
-                <strong>affordance reasoning</strong>, enables robots to infer potential functionalities
-                from physical properties, facilitating diverse tasks from kitchen utensil selection to adaptive
-                tool substitution. However, implementing robust affordance reasoning systems presents two primary
-                challenges: first, the need for high-performance, rapid inference models deployable on robotic
-                development boards, and second, the requirement for a comprehensive knowledge base capable of
-                handling diverse scenarios.
-              </p> -->
-              <!-- <p><strong>Key Contributions:</strong></p> -->
-              <ul style="list-style-type: disc; margin-left: 2em;">
+
+<!-- Intro -->
+<section class="hero is-small is-light">
+  <div class="hero-body">
+    <div class="container is-max-desktop">
+      <h2 class="title is-3 has-text-centered">Key Contributions</h2>
+      <div class="columns is-centered is-multiline">
+        <div class="column is-8">
+          <div class="box">
+            <div class="content">
+              <ul>
                 <li><em>Novel Framework:</em> We introduce <strong>Afford-X</strong>, a knowledge distillation-based slim
                   and efficient model that achieves real-time inference for task-oriented manipulation.</li>
-                <li><em>Advanced Modules:</em> Verb Attention and Bi-Fusion jointly enhance action-focus and
+                <li><em>Advanced Modules:</em> Verb Attention and Bi-Fusion jointly enhance action-focus and 
                   multimodal integration.</li>
-                <li><em>Large-Scale Datasets:</em> Our automated pipeline generates extensive affordance reasoning
-                  corpora (COCO-Aff and LVIS-Aff) via GPT-4-based processing.</li>
-                <li><em>Empirical Validation:</em> Experiments in simulated and real-world scenarios show that our
-                  approach outperforms conventional detection-based or heavyweight generative models across diverse
-                  dynamic tasks.</li>
+                <li><em>Large-Scale Datasets:</em> Our automated pipeline generates extensive affordance 
+                  reasoning corpora (COCO-Aff and LVIS-Aff) via GPT-4-based processing.</li>
+                <li><em>Empirical Validation:</em> Experiments in simulated and real-world scenarios show that our 
+                  approach outperforms conventional detection-based or heavyweight generative models across 
+                  diverse dynamic tasks.</li>
               </ul>
             </div>
           </div>
         </div>
       </div>
     </div>
-  </section>
-  <!-- End Intro -->
+  </div>
+</section>
+<!-- End Intro -->
   
   
   <!-- Approach Section -->
@@ -762,3 +755,6 @@
     </div>
   </footer>
   <!-- End Footer -->
+
+</body>
+</html>
