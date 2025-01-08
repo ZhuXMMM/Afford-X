@@ -36,7 +36,28 @@
   <script defer src="static/js/fontawesome.all.min.js"></script>
   <script src="static/js/bulma-carousel.min.js"></script>
   <script src="static/js/bulma-slider.min.js"></script>
-  <script src="static/js/index.js"></script>
+
+  <!-- 自定义高亮样式 -->
+  <style>
+    /* 高亮卡片的样式：使用 Bulma 的 info 背景色，并让文字变白等 */
+    .highlighted-card {
+      background-color: #209cee !important; /* Bulma的 is-info 背景色 */
+      color: #fff !important;
+      border: 2px solid #fff !important;
+    }
+    .highlighted-card h3.title,
+    .highlighted-card p.subtitle {
+      color: #fff !important;
+    }
+    /* 高亮gif的边框 */
+    .highlighted-gif {
+      border: 4px solid #209cee; /* 同样的 info 色 */
+      border-radius: 6px;
+      margin-top: 1rem;
+      max-width: 100%;
+      height: auto;
+    }
+  </style>
 </head>
 <body>
 
@@ -191,110 +212,85 @@
       </div>
     </div>
   </section>
-  
 
-<!-- Statistics Section -->
+
+<!-- Dataset Statistics & Visualization -->
 <section class="section hero is-medium" style="padding-top: 1rem; padding-bottom: 1rem;">
-    <div class="hero-body">
-      <div class="container is-max-desktop">
-        <h2 class="title is-3 has-text-centered">Dataset Statistics</h2>
-        <div class="columns is-centered is-variable is-6 is-multiline">
-  
-          <!-- COCO-Tasks -->
-          <div class="column is-4 has-text-centered">
-            <div class="box">
-              <h3 class="title is-4">COCO-Tasks</h3>
-              <p class="subtitle is-6 mt-4">
-                <img src="static/images/icon/gallery.png" alt="Images Icon" style="width:1em; vertical-align: middle; margin-right: 0.5em;">
-                <strong>40,000 Images</strong>
-              </p>
-              <p class="subtitle is-6 mt-2">
-                <img src="static/images/icon/check.png" alt="Tasks Icon" style="width:1em; vertical-align: middle; margin-right: 0.5em;">
-                <strong>14 Tasks</strong>
-              </p>
-              <p class="subtitle is-6 mt-2">
-                <img src="static/images/icon/categories.png" alt="Categories Icon" style="width:1em; vertical-align: middle; margin-right: 0.5em;">
-                <strong>&lt; 80 Categories</strong>
-              </p>
-            </div>
+  <div class="hero-body">
+    <div class="container is-max-desktop">
+      <h2 class="title is-3 has-text-centered">Dataset Statistics & Visualization</h2>
+      <div class="columns is-centered is-variable is-6 is-multiline">
+        <!-- COCO-Tasks -->
+        <div class="column is-4 has-text-centered" id="coco-tasks-card">
+          <div class="box">
+            <h3 class="title is-4">COCO-Tasks</h3>
+            <p class="subtitle is-6 mt-4">
+              <img src="static/images/icon/gallery.png" alt="Images Icon" style="width:1em; vertical-align: middle; margin-right: 0.5em;">
+              <strong>40,000 Images</strong>
+            </p>
+            <p class="subtitle is-6 mt-2">
+              <img src="static/images/icon/check.png" alt="Tasks Icon" style="width:1em; vertical-align: middle; margin-right: 0.5em;">
+              <strong>14 Tasks</strong>
+            </p>
+            <p class="subtitle is-6 mt-2">
+              <img src="static/images/icon/categories.png" alt="Categories Icon" style="width:1em; vertical-align: middle; margin-right: 0.5em;">
+              <strong>&lt; 80 Categories</strong>
+            </p>
           </div>
-  
-          <!-- COCO-Aff -->
-          <div class="column is-4 has-text-centered">
-            <div class="box">
-              <h3 class="title is-4">COCO-Aff</h3>
-              <p class="subtitle is-6 mt-4">
-                <img src="static/images/icon/gallery.png" alt="Images Icon" style="width:1em; vertical-align: middle; margin-right: 0.5em;">
-                <strong>686,000 Images</strong>
-              </p>
-              <p class="subtitle is-6 mt-2">
-                <img src="static/images/icon/check.png" alt="Tasks Icon" style="width:1em; vertical-align: middle; margin-right: 0.5em;">
-                <strong>1,144 Tasks</strong>
-              </p>
-              <p class="subtitle is-6 mt-2">
-                <img src="static/images/icon/categories.png" alt="Categories Icon" style="width:1em; vertical-align: middle; margin-right: 0.5em;">
-                <strong>80 Categories</strong>
-              </p>
-            </div>
+        </div>
+
+        <!-- COCO-Aff -->
+        <div class="column is-4 has-text-centered" id="coco-aff-card">
+          <div class="box">
+            <h3 class="title is-4">COCO-Aff</h3>
+            <p class="subtitle is-6 mt-4">
+              <img src="static/images/icon/gallery.png" alt="Images Icon" style="width:1em; vertical-align: middle; margin-right: 0.5em;">
+              <strong>686,000 Images</strong>
+            </p>
+            <p class="subtitle is-6 mt-2">
+              <img src="static/images/icon/check.png" alt="Tasks Icon" style="width:1em; vertical-align: middle; margin-right: 0.5em;">
+              <strong>1,144 Tasks</strong>
+            </p>
+            <p class="subtitle is-6 mt-2">
+              <img src="static/images/icon/categories.png" alt="Categories Icon" style="width:1em; vertical-align: middle; margin-right: 0.5em;">
+              <strong>80 Categories</strong>
+            </p>
           </div>
-  
-          <!-- LVIS-Aff -->
-          <div class="column is-4 has-text-centered">
-            <div class="box">
-              <h3 class="title is-4">LVIS-Aff</h3>
-              <p class="subtitle is-6 mt-4">
-                <img src="static/images/icon/gallery.png" alt="Images Icon" style="width:1em; vertical-align: middle; margin-right: 0.5em;">
-                <strong>897,000 Images</strong>
-              </p>
-              <p class="subtitle is-6 mt-2">
-                <img src="static/images/icon/check.png" alt="Tasks Icon" style="width:1em; vertical-align: middle; margin-right: 0.5em;">
-                <strong>1,496 Tasks</strong>
-              </p>
-              <p class="subtitle is-6 mt-2">
-                <img src="static/images/icon/category.png" alt="Categories Icon" style="width:1em; vertical-align: middle; margin-right: 0.5em;">
-                <strong>1,064 Categories</strong>
-              </p>
-            </div>
+        </div>
+
+        <!-- LVIS-Aff -->
+        <div class="column is-4 has-text-centered" id="lvis-aff-card">
+          <div class="box">
+            <h3 class="title is-4">LVIS-Aff</h3>
+            <p class="subtitle is-6 mt-4">
+              <img src="static/images/icon/gallery.png" alt="Images Icon" style="width:1em; vertical-align: middle; margin-right: 0.5em;">
+              <strong>897,000 Images</strong>
+            </p>
+            <p class="subtitle is-6 mt-2">
+              <img src="static/images/icon/check.png" alt="Tasks Icon" style="width:1em; vertical-align: middle; margin-right: 0.5em;">
+              <strong>1,496 Tasks</strong>
+            </p>
+            <p class="subtitle is-6 mt-2">
+              <img src="static/images/icon/category.png" alt="Categories Icon" style="width:1em; vertical-align: middle; margin-right: 0.5em;">
+              <strong>1,064 Categories</strong>
+            </p>
           </div>
-  
         </div>
       </div>
-    </div>
-  </section>
 
-<!-- Visualization Section -->
-<section class="section is-light">
-  <div class="container is-max-desktop">
-    <h2 class="title is-3 has-text-centered">Visualization of Affordance Reasoning</h2>
-    <div class="columns is-multiline is-centered" style="margin-top: 2rem;">
-      <!-- COCO-Tasks -->
-      <div class="column is-one-third has-text-centered">
-        <h3 class="title is-4">COCO-Tasks</h3>
-        <figure class="image is-4by3">
-          <img src="static/images/output_gifs/cocotasks/result.gif" 
-               alt="COCO-Tasks Visualization">
-        </figure>
-      </div>
-      <!-- COCO-Aff -->
-      <div class="column is-one-third has-text-centered">
-        <h3 class="title is-4">COCO-Aff</h3>
-        <figure class="image is-4by3">
-          <img src="static/images/output_gifs/cocoaff/result.gif" 
-               alt="COCO-Aff Visualization">
-        </figure>
-      </div>
-      <!-- LVIS-Aff -->
-      <div class="column is-one-third has-text-centered">
-        <h3 class="title is-4">LVIS-Aff</h3>
-        <figure class="image is-4by3">
-          <img src="static/images/output_gifs/lvisaff/result.gif" 
-               alt="LVIS-Aff Visualization">
-        </figure>
+      <!-- 用于显示对应gif的区域 -->
+      <div class="columns is-centered" style="margin-top: 2rem;">
+        <div class="column is-8 has-text-centered">
+          <figure>
+            <!-- 这个img的src会通过JS轮播脚本自动更新 -->
+            <img id="dataset-gif" class="highlighted-gif" src="" alt="Dataset Visualization GIF">
+          </figure>
+        </div>
       </div>
     </div>
   </div>
 </section>
-<!-- End Visualization Section -->
+<!-- End Dataset Statistics & Visualization -->
 
 
 <!-- Intro -->
@@ -309,13 +305,13 @@
               <ul>
                 <li><em>Novel Framework:</em> We introduce <strong>Afford-X</strong>, a knowledge distillation-based slim
                   and efficient model that achieves real-time inference for task-oriented manipulation.</li>
-                <li><em>Advanced Modules:</em> Verb Attention and Bi-Fusion jointly enhance action-focus and 
+                <li><em>Advanced Modules:</em> Verb Attention and Bi-Fusion jointly enhance action-focus and
                   multimodal integration.</li>
-                <li><em>Large-Scale Datasets:</em> Our automated pipeline generates extensive affordance 
-                  reasoning corpora (COCO-Aff and LVIS-Aff) via GPT-4-based processing.</li>
-                <li><em>Empirical Validation:</em> Experiments in simulated and real-world scenarios show that our 
-                  approach outperforms conventional detection-based or heavyweight generative models across 
-                  diverse dynamic tasks.</li>
+                <li><em>Large-Scale Datasets:</em> Our automated pipeline generates extensive affordance reasoning
+                  corpora (COCO-Aff and LVIS-Aff) via GPT-4-based processing.</li>
+                <li><em>Empirical Validation:</em> Experiments in simulated and real-world scenarios show that our
+                  approach outperforms conventional detection-based or heavyweight generative models across diverse
+                  dynamic tasks.</li>
               </ul>
             </div>
           </div>
@@ -325,436 +321,485 @@
   </div>
 </section>
 <!-- End Intro -->
-  
-  
-  <!-- Approach Section -->
-  <section class="section hero is-small">
-    <div class="hero-body">
-      <div class="container is-max-desktop">
-        <h2 class="title is-3 has-text-centered">Framework</h2>
-  
-        <!-- First row: BF + VA modules, now vertical -->
-        <div class="columns is-variable is-7 is-centered">
-            <!-- Image (full-width) -->
-            <div class="column is-10">
+
+<!-- Approach Section -->
+<section class="section hero is-small">
+  <div class="hero-body">
+    <div class="container is-max-desktop">
+      <h2 class="title is-3 has-text-centered">Framework</h2>
+
+      <!-- First row: BF + VA modules, now vertical -->
+      <div class="columns is-variable is-7 is-centered">
+          <!-- Image (full-width) -->
+          <div class="column is-10">
+          <figure class="image is-fullwidth box">
+              <img src="static/images/method_pipeline.png" alt="Framework" style="width:100%; height:auto;">
+          </figure>
+          </div>
+      </div>
+      
+      <div class="columns is-variable is-7 is-centered">
+          <!-- Text (full-width) -->
+          <div class="column is-10">
+          <div class="content" style="text-align: left;">
+              <p>
+              Our Afford-X pipeline processes visual features from images and textual features from prompts
+              through two key components: a <strong>Bi-Fusion (BF)</strong> module that aligns text-visual
+              representations via cross-attention, and a <strong>Verb Attention (VA)</strong> module that
+              emphasizes action-related cues. The enhanced features feed into a transformer encoder-decoder,
+              producing parallel outputs for object detection and segmentation, enabling task-specific object
+              identification even without explicit object labels.
+              </p>
+          </div>
+          </div>
+      </div>
+
+      <hr class="dropdown-divider" />
+
+      <!-- Second row: Distillation Framework -->
+      <div class="columns is-centered">
+          <!-- Image (full-width) -->
+          <div class="column is-6">
             <figure class="image is-fullwidth box">
-                <img src="static/images/method_pipeline.png" alt="Framework" style="width:100%; height:auto;">
+              <img src="static/images/framework.png" alt="Method Pipeline" style="width:100%; height:auto;">
             </figure>
-            </div>
+          </div>
         </div>
         
-        <div class="columns is-variable is-7 is-centered">
-            <!-- Text (full-width) -->
-            <div class="column is-10">
-            <div class="content" style="text-align: left;">
-                <p>
-                Our Afford-X pipeline processes visual features from images and textual features from prompts
-                through two key components: a <strong>Bi-Fusion (BF)</strong> module that aligns text-visual
-                representations via cross-attention, and a <strong>Verb Attention (VA)</strong> module that
-                emphasizes action-related cues. The enhanced features feed into a transformer encoder-decoder,
-                producing parallel outputs for object detection and segmentation, enabling task-specific object
-                identification even without explicit object labels.
-                </p>
-            </div>
-            </div>
-        </div>
-  
-        <hr class="dropdown-divider" />
-  
-        <!-- Second row: Distillation Framework -->
         <div class="columns is-centered">
-            <!-- Image (full-width) -->
-            <div class="column is-6">
-              <figure class="image is-fullwidth box">
-                <img src="static/images/framework.png" alt="Method Pipeline" style="width:100%; height:auto;">
-              </figure>
-            </div>
-          </div>
-          
-          <div class="columns is-centered">
-            <!-- Text (full-width) -->
-            <div class="column is-10">
-              <div class="content" style="text-align: left;">
-                <p>
-                  Our noun-pronoun distillation framework comprises teacher and student encoder-decoders. The
-                  teacher learns from explicit object labels (e.g., "couch"), storing noun features in a memory
-                  bank, while the student processes pronoun inputs (e.g., "something") guided by these stored
-                  prototypes. A soft binary target loss aligns their bounding box predictions, enabling
-                  category-agnostic affordance detection while preserving discriminative power.
-                </p>
-              </div>
-            </div>
-          </div>
-  
-      </div>
-    </div>
-  </section>
-  <!-- End Approach Section -->
-  
-  
-  <!-- Dataset Construction Section -->
-  <section class="section hero is-light is-small">
-    <div class="hero-body">
-      <div class="container is-max-desktop">
-        <h2 class="title is-3 has-text-centered">Dataset Construction</h2>
-  
-        <!-- Row for Image -->
-        <div class="columns is-centered">
-          <div class="column is-10">
-            <figure class="image is-fullwidth box">
-              <img src="static/images/dataset_construction.png" alt="Dataset Construction" style="width:100%; height:auto;">
-            </figure>
-          </div>
-        </div>
-  
-        <!-- Row for Text -->
-        <div class="columns is-centered">
+          <!-- Text (full-width) -->
           <div class="column is-10">
             <div class="content" style="text-align: left;">
               <p>
-                Our automated pipeline converts conventional object detection annotations into large-scale
-                affordance datasets with minimal human intervention. The process starts by generating a set of
-                diverse task prompts for each object category (step 1), then matches these prompts to relevant
-                categories using commonsense preference rankings (step 2). Next, a quality inspection step
-                filters out inappropriate or duplicative pairs (step 3). Finally, image sampling is conducted
-                to ensure balanced coverage of different categories and layouts (step 4), producing
-                comprehensive affordance-task pairs.
+                Our noun-pronoun distillation framework comprises teacher and student encoder-decoders. The
+                teacher learns from explicit object labels (e.g., "couch"), storing noun features in a memory
+                bank, while the student processes pronoun inputs (e.g., "something") guided by these stored
+                prototypes. A soft binary target loss aligns their bounding box predictions, enabling
+                category-agnostic affordance detection while preserving discriminative power.
               </p>
             </div>
           </div>
         </div>
-        
-      </div>
+
     </div>
-  </section>
-  <!-- End Dataset Construction Section -->
-  
-  
-  <!-- EMBODIED AFFORDANCE REASONING -->
-  <section class="section hero is-small">
-    <div class="hero-body">
-      <div class="container is-max-desktop">
-        <h2 class="title is-3 has-text-centered">Embodied Affordance Reasoning</h2>
-        
-        <!-- 上方放置图片 -->
-        <div class="columns is-centered">
-          <div class="column is-10">
-            <figure class="image is-fullwidth box">
-              <img src="static/images/infra_compressed.png"
-                   alt="Embodied Affordance Reasoning"
-                   style="width:100%; height:auto;">
-            </figure>
-          </div>
+  </div>
+</section>
+<!-- End Approach Section -->
+
+
+<!-- Dataset Construction Section -->
+<section class="section hero is-light is-small">
+  <div class="hero-body">
+    <div class="container is-max-desktop">
+      <h2 class="title is-3 has-text-centered">Dataset Construction</h2>
+
+      <!-- Row for Image -->
+      <div class="columns is-centered">
+        <div class="column is-10">
+          <figure class="image is-fullwidth box">
+            <img src="static/images/dataset_construction.png" alt="Dataset Construction" style="width:100%; height:auto;">
+          </figure>
         </div>
-        
-        <!-- 下方放置文字 -->
-        <div class="columns is-centered">
-          <div class="column is-10">
-            <div class="content" style="text-align: left;">
-              <p>
-                To deploy Afford-X in real-world or simulated robotics environments, we adopt a system
-                architecture that begins with RGB image processing for object masks (a). Optionally, the robot
-                may build a geometric map (b) for robust path planning. Based on these perceptual outputs, the
-                robot positions itself to optimize viewpoint and executes the planned manipulation (c). For
-                multiple sub-tasks (e.g., "build up a space for working"), the system recursively applies the
-                affordance-driven selection and action cycle (d).
-              </p>
-            </div>
-          </div>
-        </div>
-        
       </div>
-    </div>
-  </section>
-  <!-- End EMBODIED AFFORDANCE REASONING -->
-  
-<!-- Key Experimental Results Section -->
-<section class="section hero is-light is-small" id="key-experiments">
-    <div class="hero-body">
-      <div class="container is-max-desktop">
-        <h2 class="title is-3 has-text-centered">Key Experimental Results</h2>
-        <div class="content box" style="margin-top: 2em;">
-  
-          <!-- (1) SOTA Comparison Table -->
-          <p class="subtitle is-5"><strong>State-of-the-Art Comparison</strong></p>
-          <p>
-            Below, we compare <em>Afford-X</em> against existing methods on 
-            <em>COCO-Tasks</em>, 
-            <span style="color:blue"><strong>COCO-Aff</strong></span> (686k images, 1,144 tasks),
-            and 
-            <span style="color:orange"><strong>LVIS-Aff</strong></span> (897k images, 1,496 tasks). 
-            Our model consistently achieves superior performance in both affordance understanding (mAP<sub>box</sub>) 
-            and instance segmentation (mAP<sub>mask</sub>). <br/>
-            Bold values indicate the best performance, while underlined values indicate the second-best.
-          </p>
-  
-          <div class="table-container" style="margin-bottom: 1.5em;">
-            <table class="table is-fullwidth is-bordered is-striped is-hoverable">
-              <caption style="caption-side: top; font-weight: 600;">
-                <em>
-                  Comparison of Afford-X with state-of-the-art methods.
-                </em>
-              </caption>
-              <thead>
-                <tr>
-                  <th rowspan="2"><strong>Index</strong></th>
-                  <th rowspan="2"><strong>Method</strong></th>
-                  <th colspan="2"><strong>COCO-Tasks</strong></th>
-                  <th colspan="2"><span style="color:blue;"><strong>COCO-Aff</strong></span></th>
-                  <th colspan="2"><span style="color:orange;"><strong>LVIS-Aff</strong></span></th>
-                </tr>
-                <tr>
-                  <th>mAP<sub>box</sub></th>
-                  <th>mAP<sub>mask</sub></th>
-                  <th>mAP<sub>box</sub></th>
-                  <th>mAP<sub>mask</sub></th>
-                  <th>mAP<sub>box</sub></th>
-                  <th>mAP<sub>mask</sub></th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>(a)</td>
-                  <td>Fast R-CNN + GGNN<sup>†</sup></td>
-                  <td>32.6</td>
-                  <td>-</td>
-                  <td>-</td>
-                  <td>-</td>
-                  <td>-</td>
-                  <td>-</td>
-                </tr>
-                <tr>
-                  <td>(b)</td>
-                  <td>YOLO + GGNN<sup>†</sup></td>
-                  <td>33.2</td>
-                  <td>-</td>
-                  <td>-</td>
-                  <td>-</td>
-                  <td>-</td>
-                  <td>-</td>
-                </tr>
-                <tr>
-                  <td>(c)</td>
-                  <td>MDETR (w/o pretraining) + GGNN<sup>†</sup></td>
-                  <td>9.6</td>
-                  <td>8.6</td>
-                  <td>-</td>
-                  <td>-</td>
-                  <td>-</td>
-                  <td>-</td>
-                </tr>
-                <tr>
-                  <td>(d)</td>
-                  <td>MDETR + GGNN<sup>†</sup></td>
-                  <td>36.8</td>
-                  <td>30.3</td>
-                  <td>-</td>
-                  <td>-</td>
-                  <td>-</td>
-                  <td>-</td>
-                </tr>
-                <!-- Keep only VitDet (ViT-H) row -->
-                <tr>
-                  <td>(g)</td>
-                  <td>ViTDet (ViT-H) + GGNN</td>
-                  <td>33.8</td>
-                  <td>25.9</td>
-                  <td>31.5</td>
-                  <td>26.1</td>
-                  <td>8.5</td>
-                  <td>7.4</td>
-                </tr>
-                <tr>
-                  <td>(h)</td>
-                  <td>MDETR<sup>†</sup></td>
-                  <td>41.3</td>
-                  <td>35.2</td>
-                  <td>44.7</td>
-                  <td>41.0</td>
-                  <td>25.1</td>
-                  <td>22.7</td>
-                </tr>
-                <tr>
-                  <td>(i)</td>
-                  <td>MDETR (w/ VA &amp; BF)</td>
-                  <td>43.2</td>
-                  <td>36.9</td>
-                  <td><u>45.2</u></td>
-                  <td><u>41.4</u></td>
-                  <td><u>26.8</u></td>
-                  <td><u>24.2</u></td>
-                </tr>
-                <tr>
-                  <td>(j)</td>
-                  <td>TOIST<sup>†</sup></td>
-                  <td><u>44.1</u></td>
-                  <td><u>39.0</u></td>
-                  <td>44.9</td>
-                  <td>41.3</td>
-                  <td>26.2</td>
-                  <td>23.4</td>
-                </tr>
-                <tr>
-                  <td>(k)</td>
-                  <td><strong>Afford-X (w/ VA &amp; BF)</strong></td>
-                  <td><strong>45.3</strong></td>
-                  <td><strong>39.2</strong></td>
-                  <td><strong>45.8</strong></td>
-                  <td><strong>42.5</strong></td>
-                  <td><strong>27.7</strong></td>
-                  <td><strong>24.8</strong></td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-          <p class="is-size-6 has-text-grey">
-            <em>
-              † Results from original papers. <br/>
-              Afford-X consistently outperforms baselines across all datasets, demonstrating robust affordance reasoning.
-            </em>
-          </p>
-  
-          <hr style="margin-top:2em; margin-bottom:2em;">
-  
-          <!-- (2) Efficiency Comparison Table -->
-          <p class="subtitle is-5"><strong>Computational Efficiency</strong></p>
-          <p>
-            We also compare runtime efficiency, showing frames per second (FPS) and parameter counts 
-            for various \ac{llm}-based pipelines versus our approach on an NVIDIA 3090 GPU:
-          </p>
-          <div class="table-container" style="margin-bottom: 1.5em;">
-            <table class="table is-fullwidth is-bordered is-striped is-hoverable">
-              <caption style="caption-side: top; font-weight: 600;">
-                <em>Computational efficiency comparison</em>
-              </caption>
-              <thead>
-                <tr>
-                  <th><strong>Index</strong></th>
-                  <th><strong>Method</strong></th>
-                  <th><strong>FPS</strong></th>
-                  <th><strong>Parameters</strong></th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>(a)</td>
-                  <td>Detection + GPT-4</td>
-                  <td>1.18</td>
-                  <td>&gt;369M</td>
-                </tr>
-                <tr>
-                  <td>(b)</td>
-                  <td>Detection + BLIP + GPT-4</td>
-                  <td>0.27</td>
-                  <td>&gt;498M</td>
-                </tr>
-                <tr>
-                  <td>(c)</td>
-                  <td>GPT-4 + OpenSeeD</td>
-                  <td>0.11</td>
-                  <td>&gt;116M</td>
-                </tr>
-                <tr>
-                  <td>(d)</td>
-                  <td>GPT-4V + OpenSeeD</td>
-                  <td>0.04</td>
-                  <td>&gt;116M</td>
-                </tr>
-                <tr>
-                  <td>(e)</td>
-                  <td>SPHINX + OpenSeeD</td>
-                  <td>0.11</td>
-                  <td>1.2B</td>
-                </tr>
-                <tr>
-                  <td>(f)</td>
-                  <td>SPHINX (CoT)</td>
-                  <td>0.49</td>
-                  <td>1.1B</td>
-                </tr>
-                <tr>
-                  <td>(g)</td>
-                  <td>COCO-Aff (Ours)</td>
-                  <td><strong>2.38</strong></td>
-                  <td><strong>187M</strong></td>
-                </tr>
-                <tr>
-                  <td>(h)</td>
-                  <td>LVIS (Ours)</td>
-                  <td><strong>2.38</strong></td>
-                  <td><strong>187M</strong></td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-  
-          <hr style="margin-top:2em; margin-bottom:2em;">
-  
-          <!-- (3) Precision Comparison Figure -->
-          <p class="subtitle is-5"><strong>Precision Comparison</strong></p>
-          <div class="box" style="text-align:center;">
-            <figure class="image is-fullwidth">
-              <img src="static/images/combined_metrics_a.png" alt="Precision comparison of different methods"
-                   style="width:100%; height:auto;">
-            </figure>
-            <p class="is-size-6 has-text-grey" style="margin-top:0.75em;">
-              <em>Violin plot comparing precision of LLM-based methods vs. Afford. 
-                Stars denote statistical significance. Afford-X achieves notably higher precision 
-                with fewer parameters and faster runtime.</em>
+
+      <!-- Row for Text -->
+      <div class="columns is-centered">
+        <div class="column is-10">
+          <div class="content" style="text-align: left;">
+            <p>
+              Our automated pipeline converts conventional object detection annotations into large-scale
+              affordance datasets with minimal human intervention. The process starts by generating a set of
+              diverse task prompts for each object category (step 1), then matches these prompts to relevant
+              categories using commonsense preference rankings (step 2). Next, a quality inspection step
+              filters out inappropriate or duplicative pairs (step 3). Finally, image sampling is conducted
+              to ensure balanced coverage of different categories and layouts (step 4), producing
+              comprehensive affordance-task pairs.
             </p>
           </div>
-  
-          <hr style="margin-top:2em; margin-bottom:2em;">
-  
-          <!-- (Optional) Additional Summary -->
-          <p>
-            To fully reflect our <strong>Motivation</strong>, we also highlight our model’s 
-            <em>robust generalization</em> to unseen tasks and categories, its <em>real-time inference</em> 
-            for local deployment, and <em>multi-object preference reasoning</em>. These elements collectively 
-            demonstrate the ability of Afford-X to operate effectively in diverse, dynamic scenarios, 
-            aligning with our goal of enabling practical, task-oriented manipulation in real-world robotics.
-          </p>
-  
         </div>
       </div>
+      
     </div>
-  </section>
+  </div>
+</section>
+<!-- End Dataset Construction Section -->
 
 
-  <!-- BibTex citation (unchanged) -->
-  <section class="section" id="BibTeX">
-    <div class="container is-max-desktop content">
-      <h2 class="title">BibTeX</h2>
-      <pre><code>@article{affordx2025,
+<!-- EMBODIED AFFORDANCE REASONING -->
+<section class="section hero is-small">
+  <div class="hero-body">
+    <div class="container is-max-desktop">
+      <h2 class="title is-3 has-text-centered">Embodied Affordance Reasoning</h2>
+      
+      <!-- 上方放置图片 -->
+      <div class="columns is-centered">
+        <div class="column is-10">
+          <figure class="image is-fullwidth box">
+            <img src="static/images/infra_compressed.png"
+                 alt="Embodied Affordance Reasoning"
+                 style="width:100%; height:auto;">
+          </figure>
+        </div>
+      </div>
+      
+      <!-- 下方放置文字 -->
+      <div class="columns is-centered">
+        <div class="column is-10">
+          <div class="content" style="text-align: left;">
+            <p>
+              To deploy Afford-X in real-world or simulated robotics environments, we adopt a system
+              architecture that begins with RGB image processing for object masks (a). Optionally, the robot
+              may build a geometric map (b) for robust path planning. Based on these perceptual outputs, the
+              robot positions itself to optimize viewpoint and executes the planned manipulation (c). For
+              multiple sub-tasks (e.g., "build up a space for working"), the system recursively applies the
+              affordance-driven selection and action cycle (d).
+            </p>
+          </div>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+</section>
+<!-- End EMBODIED AFFORDANCE REASONING -->
+
+
+<!-- Key Experimental Results Section -->
+<section class="section hero is-light is-small" id="key-experiments">
+  <div class="hero-body">
+    <div class="container is-max-desktop">
+      <h2 class="title is-3 has-text-centered">Key Experimental Results</h2>
+      <div class="content box" style="margin-top: 2em;">
+
+        <!-- (1) SOTA Comparison Table -->
+        <p class="subtitle is-5"><strong>State-of-the-Art Comparison</strong></p>
+        <p>
+          Below, we compare <em>Afford-X</em> against existing methods on 
+          <em>COCO-Tasks</em>, 
+          <span style="color:blue"><strong>COCO-Aff</strong></span> (686k images, 1,144 tasks),
+          and 
+          <span style="color:orange"><strong>LVIS-Aff</strong></span> (897k images, 1,496 tasks). 
+          Our model consistently achieves superior performance in both affordance understanding (mAP<sub>box</sub>) 
+          and instance segmentation (mAP<sub>mask</sub>). <br/>
+          Bold values indicate the best performance, while underlined values indicate the second-best.
+        </p>
+
+        <div class="table-container" style="margin-bottom: 1.5em;">
+          <table class="table is-fullwidth is-bordered is-striped is-hoverable">
+            <caption style="caption-side: top; font-weight: 600;">
+              <em>
+                Comparison of Afford-X with state-of-the-art methods.
+              </em>
+            </caption>
+            <thead>
+              <tr>
+                <th rowspan="2"><strong>Index</strong></th>
+                <th rowspan="2"><strong>Method</strong></th>
+                <th colspan="2"><strong>COCO-Tasks</strong></th>
+                <th colspan="2"><span style="color:blue;"><strong>COCO-Aff</strong></span></th>
+                <th colspan="2"><span style="color:orange;"><strong>LVIS-Aff</strong></span></th>
+              </tr>
+              <tr>
+                <th>mAP<sub>box</sub></th>
+                <th>mAP<sub>mask</sub></th>
+                <th>mAP<sub>box</sub></th>
+                <th>mAP<sub>mask</sub></th>
+                <th>mAP<sub>box</sub></th>
+                <th>mAP<sub>mask</sub></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>(a)</td>
+                <td>Fast R-CNN + GGNN<sup>†</sup></td>
+                <td>32.6</td>
+                <td>-</td>
+                <td>-</td>
+                <td>-</td>
+                <td>-</td>
+                <td>-</td>
+              </tr>
+              <tr>
+                <td>(b)</td>
+                <td>YOLO + GGNN<sup>†</sup></td>
+                <td>33.2</td>
+                <td>-</td>
+                <td>-</td>
+                <td>-</td>
+                <td>-</td>
+                <td>-</td>
+              </tr>
+              <tr>
+                <td>(c)</td>
+                <td>MDETR (w/o pretraining) + GGNN<sup>†</sup></td>
+                <td>9.6</td>
+                <td>8.6</td>
+                <td>-</td>
+                <td>-</td>
+                <td>-</td>
+                <td>-</td>
+              </tr>
+              <tr>
+                <td>(d)</td>
+                <td>MDETR + GGNN<sup>†</sup></td>
+                <td>36.8</td>
+                <td>30.3</td>
+                <td>-</td>
+                <td>-</td>
+                <td>-</td>
+                <td>-</td>
+              </tr>
+              <!-- Keep only VitDet (ViT-H) row -->
+              <tr>
+                <td>(g)</td>
+                <td>ViTDet (ViT-H) + GGNN</td>
+                <td>33.8</td>
+                <td>25.9</td>
+                <td>31.5</td>
+                <td>26.1</td>
+                <td>8.5</td>
+                <td>7.4</td>
+              </tr>
+              <tr>
+                <td>(h)</td>
+                <td>MDETR<sup>†</sup></td>
+                <td>41.3</td>
+                <td>35.2</td>
+                <td>44.7</td>
+                <td>41.0</td>
+                <td>25.1</td>
+                <td>22.7</td>
+              </tr>
+              <tr>
+                <td>(i)</td>
+                <td>MDETR (w/ VA &amp; BF)</td>
+                <td>43.2</td>
+                <td>36.9</td>
+                <td><u>45.2</u></td>
+                <td><u>41.4</u></td>
+                <td><u>26.8</u></td>
+                <td><u>24.2</u></td>
+              </tr>
+              <tr>
+                <td>(j)</td>
+                <td>TOIST<sup>†</sup></td>
+                <td><u>44.1</u></td>
+                <td><u>39.0</u></td>
+                <td>44.9</td>
+                <td>41.3</td>
+                <td>26.2</td>
+                <td>23.4</td>
+              </tr>
+              <tr>
+                <td>(k)</td>
+                <td><strong>Afford-X (w/ VA &amp; BF)</strong></td>
+                <td><strong>45.3</strong></td>
+                <td><strong>39.2</strong></td>
+                <td><strong>45.8</strong></td>
+                <td><strong>42.5</strong></td>
+                <td><strong>27.7</strong></td>
+                <td><strong>24.8</strong></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="is-size-6 has-text-grey">
+          <em>
+            † Results from original papers. <br/>
+            Afford-X consistently outperforms baselines across all datasets, demonstrating robust affordance reasoning.
+          </em>
+        </p>
+
+        <hr style="margin-top:2em; margin-bottom:2em;">
+
+        <!-- (2) Efficiency Comparison Table -->
+        <p class="subtitle is-5"><strong>Computational Efficiency</strong></p>
+        <p>
+          We also compare runtime efficiency, showing frames per second (FPS) and parameter counts 
+          for various \ac{llm}-based pipelines versus our approach on an NVIDIA 3090 GPU:
+        </p>
+        <div class="table-container" style="margin-bottom: 1.5em;">
+          <table class="table is-fullwidth is-bordered is-striped is-hoverable">
+            <caption style="caption-side: top; font-weight: 600;">
+              <em>Computational efficiency comparison</em>
+            </caption>
+            <thead>
+              <tr>
+                <th><strong>Index</strong></th>
+                <th><strong>Method</strong></th>
+                <th><strong>FPS</strong></th>
+                <th><strong>Parameters</strong></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>(a)</td>
+                <td>Detection + GPT-4</td>
+                <td>1.18</td>
+                <td>&gt;369M</td>
+              </tr>
+              <tr>
+                <td>(b)</td>
+                <td>Detection + BLIP + GPT-4</td>
+                <td>0.27</td>
+                <td>&gt;498M</td>
+              </tr>
+              <tr>
+                <td>(c)</td>
+                <td>GPT-4 + OpenSeeD</td>
+                <td>0.11</td>
+                <td>&gt;116M</td>
+              </tr>
+              <tr>
+                <td>(d)</td>
+                <td>GPT-4V + OpenSeeD</td>
+                <td>0.04</td>
+                <td>&gt;116M</td>
+              </tr>
+              <tr>
+                <td>(e)</td>
+                <td>SPHINX + OpenSeeD</td>
+                <td>0.11</td>
+                <td>1.2B</td>
+              </tr>
+              <tr>
+                <td>(f)</td>
+                <td>SPHINX (CoT)</td>
+                <td>0.49</td>
+                <td>1.1B</td>
+              </tr>
+              <tr>
+                <td>(g)</td>
+                <td>COCO-Aff (Ours)</td>
+                <td><strong>2.38</strong></td>
+                <td><strong>187M</strong></td>
+              </tr>
+              <tr>
+                <td>(h)</td>
+                <td>LVIS (Ours)</td>
+                <td><strong>2.38</strong></td>
+                <td><strong>187M</strong></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <hr style="margin-top:2em; margin-bottom:2em;">
+
+        <!-- (3) Precision Comparison Figure -->
+        <p class="subtitle is-5"><strong>Precision Comparison</strong></p>
+        <div class="box" style="text-align:center;">
+          <figure class="image is-fullwidth">
+            <img src="static/images/combined_metrics_a.png" alt="Precision comparison of different methods"
+                 style="width:100%; height:auto;">
+          </figure>
+          <p class="is-size-6 has-text-grey" style="margin-top:0.75em;">
+            <em>Violin plot comparing precision of LLM-based methods vs. Afford. 
+              Stars denote statistical significance. Afford-X achieves notably higher precision 
+              with fewer parameters and faster runtime.</em>
+          </p>
+        </div>
+
+        <hr style="margin-top:2em; margin-bottom:2em;">
+
+        <!-- (Optional) Additional Summary -->
+        <p>
+          To fully reflect our <strong>Motivation</strong>, we also highlight our model’s 
+          <em>robust generalization</em> to unseen tasks and categories, its <em>real-time inference</em> 
+          for local deployment, and <em>multi-object preference reasoning</em>. These elements collectively 
+          demonstrate the ability of Afford-X to operate effectively in diverse, dynamic scenarios, 
+          aligning with our goal of enabling practical, task-oriented manipulation in real-world robotics.
+        </p>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- BibTex citation (unchanged) -->
+<section class="section" id="BibTeX">
+  <div class="container is-max-desktop content">
+    <h2 class="title">BibTeX</h2>
+    <pre><code>@article{affordx2025,
     title={A Generalizable and Slim Affordance Reasoning Framework for Task-oriented Manipulation},
     author={...},
     journal={...},
     year={2025}
   }</code></pre>
-    </div>
-  </section>
-  <!-- End BibTex citation -->
-  
-  
-  <!-- Footer -->
-  <footer class="footer">
-    <div class="container">
-      <div class="columns is-centered">
-        <div class="column is-8">
-          <div class="content has-text-centered">
-            <p>
-              This page was built using the <a href="https://github.com/eliahuhorwitz/Academic-project-page-template" target="_blank">Academic Project Page Template</a> which was adopted from the <a href="https://nerfies.github.io" target="_blank">Nerfies</a> project page.
-              You are free to borrow the source code of this website, we just ask that you link back to this page in the footer. <br>
-              This website is licensed under a
-              <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/" target="_blank">Creative
-              Commons Attribution-ShareAlike 4.0 International License</a>.
-            </p>
-          </div>
+  </div>
+</section>
+<!-- End BibTex citation -->
+
+
+<!-- Footer -->
+<footer class="footer">
+  <div class="container">
+    <div class="columns is-centered">
+      <div class="column is-8">
+        <div class="content has-text-centered">
+          <p>
+            This page was built using the <a href="https://github.com/eliahuhorwitz/Academic-project-page-template" target="_blank">Academic Project Page Template</a> which was adopted from the <a href="https://nerfies.github.io" target="_blank">Nerfies</a> project page.
+            You are free to borrow the source code of this website, we just ask that you link back to this page in the footer. <br>
+            This website is licensed under a
+            <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/" target="_blank">Creative
+            Commons Attribution-ShareAlike 4.0 International License</a>.
+          </p>
         </div>
       </div>
     </div>
-  </footer>
-  <!-- End Footer -->
+  </div>
+</footer>
+<!-- End Footer -->
+
+
+<!-- JS脚本放在页面底部，控制数据集卡片与gif的轮播 -->
+<script>
+  // 数据集配置
+  var datasets = [
+    {
+      name: "COCO-Tasks",
+      cardId: "coco-tasks-card",
+      gifSrc: "static/images/output_gifs/cocotasks/result.gif"
+    },
+    {
+      name: "COCO-Aff",
+      cardId: "coco-aff-card",
+      gifSrc: "static/images/output_gifs/cocoaff/result.gif"
+    },
+    {
+      name: "LVIS-Aff",
+      cardId: "lvis-aff-card",
+      gifSrc: "static/images/output_gifs/lvisaff/result.gif"
+    }
+  ];
+
+  var currentIndex = 0;
+
+  function highlightDataset(index) {
+    // 移除所有卡片的高亮
+    datasets.forEach(function(dataset){
+      document.getElementById(dataset.cardId).classList.remove("highlighted-card");
+    });
+    // 为当前数据集卡片添加高亮
+    var selected = datasets[index];
+    document.getElementById(selected.cardId).classList.add("highlighted-card");
+    // 更新下方gif
+    document.getElementById("dataset-gif").src = selected.gifSrc;
+  }
+
+  function nextDataset() {
+    currentIndex = (currentIndex + 1) % datasets.length;
+    highlightDataset(currentIndex);
+  }
+
+  // 页面加载完后自动开始轮播
+  window.addEventListener("load", function(){
+    highlightDataset(currentIndex);
+    // 每隔3秒切换下一个数据集
+    setInterval(nextDataset, 3000);
+  });
+</script>
 
 </body>
 </html>
