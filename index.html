@@ -36,7 +36,23 @@
   <script defer src="static/js/fontawesome.all.min.js"></script>
   <script src="static/js/bulma-carousel.min.js"></script>
   <script src="static/js/bulma-slider.min.js"></script>
-
+  <script>
+    // 添加视频加载错误处理
+    function handleVideoError(video) {
+      console.error('Video loading error:', video.error);
+    }
+    
+    // 添加视频加载状态监控
+    function handleVideoLoaded(video) {
+      console.log('Video loaded successfully');
+    }
+    
+    window.onload = function() {
+      const video = document.getElementById('tree');
+      video.onerror = () => handleVideoError(video);
+      video.onloadeddata = () => handleVideoLoaded(video);
+    }
+    </script>
   <!-- 自定义高亮样式 -->
   <style>
     /* 1) 卡片高亮：用 box-shadow、圆角使其突出，而不改变原背景与文字色。 */
@@ -176,6 +192,7 @@
         type="video/mp4"> -->
         <source src="static/videos/classify/scene1/1.mp4" 
         type="video/mp4">
+        <p>Your browser does not support HTML5 video.</p>
       </video>
       <h2 class="subtitle has-text-centered">
         Aliquam vitae elit ullamcorper tellus egestas pellentesque. Ut lacus tellus, maximus vel lectus at, placerat pretium mi. Maecenas dignissim tincidunt vestibulum. Sed consequat hendrerit nisl ut maximus. 
