@@ -5,3 +5,5 @@ data/coco-tasks1000_general_prefer
 data/images
 ckpt/
 wenshushu/
+__pycache__
+.gitignore
