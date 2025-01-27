@@ -164,3 +164,7 @@ figure.image img {
   max-width: 100%;
   height: auto;
 }
+
+.video-wrapper video {
+  width: 100%;
+}
