@@ -33,8 +33,8 @@ if __name__ == "__main__":
     output_dir = "static/videos/h264"
     
     # 遍历所有场景和视频
-    for scene in range(1, 7):
-        for video in range(1, 6):
+    for scene in range(2, 3):
+        for video in range(1, 2):
             input_path = f"{input_dir}/scene{scene}/{video}.mp4"
             output_path = f"{output_dir}/scene{scene}/{video}.mp4"
             
