@@ -25,7 +25,7 @@ def convert_to_h264(input_path, output_path):
         return False
     
     return True
-nis
+
 # 使用示例
 if __name__ == "__main__":
     # 设置输入输出路径
