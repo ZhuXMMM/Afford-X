@@ -61,342 +61,134 @@ pip install -r requirements.txt
 
 ## Running
 
-### 1. Plain detection
-
-#### Training
+All training and evaluation scripts are organized in the `scripts` directory. The directory structure is as follows:
 
 ```
-CUDA_VISIBLE_DEVICES=0,1,2,3,4,5 python -m torch.distributed.launch --master_port=23456 --nproc_per_node=6 --use_env main.py \
---dataset_config configs/tdod.json \
---train_batch_size 6  \
---valid_batch_size 8  \
---load /path/to/pretrained_resnet101_checkpoint.pth  \
---ema --text_encoder_lr 1e-5 --lr 5e-5 \
---num_workers 5 \
---output-dir 'logs/test' \
---eval_skip 1
+scripts/
+  ├── noun/                 # Scripts for training teacher model (noun input)
+  │    ├── noun_cocotasks.sh        # Training on COCO-Tasks
+  │    ├── noun_mask_cocotasks.sh   # Training segmentation on COCO-Tasks
+  │    ├── eval_noun.sh             # Evaluation for detection
+  │    ├── eval_noun_mask.sh        # Evaluation for segmentation
+  │    └── ...                      # Scripts for other datasets (COCO, LVIS)
+  │
+  ├── pronoun/              # Scripts for training student model (pronoun input)
+  │    ├── pronoun_cocotasks.sh     # Training on COCO-Tasks
+  │    ├── pronoun_mask_cocotasks.sh# Training segmentation on COCO-Tasks
+  │    ├── eval_pronoun.sh          # Evaluation for detection
+  │    ├── eval_pronoun_mask.sh     # Evaluation for segmentation
+  │    └── ...                      # Scripts for other datasets (COCO, LVIS)
+  │
+  └── distillation/        # Scripts for training with distillation framework
+       ├── distill_cocotasks.sh     # Detection distillation on COCO-Tasks
+       ├── distill_mask_cocotasks.sh # Segmentation distillation on COCO-Tasks
+       ├── eval_distill.sh          # Evaluation for distilled detection
+       ├── eval_distill_mask.sh     # Evaluation for distilled segmentation
+       └── ...                      # Scripts for other datasets (COCO, LVIS)
 ```
 
-To leverage the pre-trained noun referring expression comprehension model, download the checkpoint from [here](https://zenodo.org/record/4721981/files/pretrained_resnet101_checkpoint.pth?download=1) (provided by [MDETR](https://github.com/ashkamath/mdetr/blob/49fe251a1e1410cc529585d0e875e7e3d1fba92a/.github/pretrain.md)) and change the value of `--load` to be the path of the checkpoint.
+### Training and Evaluation
 
-#### Evaluation
-Please change `--resume` to the path of the trained model to be evaluated.
-```
-CUDA_VISIBLE_DEVICES=0 python -m torch.distributed.launch --master_port=23456 --nproc_per_node=1 --use_env main.py \
---dataset_config configs/tdod.json \
---valid_batch_size 8  \
---num_workers 5 \
---resume /path/to/checkpoint  \
---ema --eval \
---output-dir 'logs/test' \
---no_contrastive_align_loss
-```
+1. **For Teacher Model (Noun Input)**:
+```bash
+# Train detection model on COCO-Tasks
+bash scripts/noun/noun_cocotasks.sh
 
-#### Verb-noun input
-To train or evaluate the teacher model which leverages the privileged ground truth knowledge by taking verb-noun expression as text input, just set `--verb_noun_input` like:
-```
-CUDA_VISIBLE_DEVICES=0,1,2,3,4,5 python -m torch.distributed.launch --master_port=23456 --nproc_per_node=6 --use_env main.py \
---dataset_config configs/tdod.json \
---train_batch_size 6  \
---valid_batch_size 8  \
---load /path/to/pretrained_resnet101_checkpoint.pth  \
---ema --text_encoder_lr 1e-5 --lr 5e-5 \
---num_workers 5 \
---output-dir 'logs/test' \
---eval_skip 1 \
---verb_noun_input
+# Train segmentation model on COCO-Tasks
+bash scripts/noun/noun_mask_cocotasks.sh
+
+# Evaluate detection model
+bash scripts/noun/eval_noun.sh
+
+# Evaluate segmentation model
+bash scripts/noun/eval_noun_mask.sh
 ```
 
-#### Running without pre-training
-To train Afford-X without using the pre-trained noun referring expression comprehension model, leave the parameter `--load` empty and set `--without_pretrain`.
-```
-CUDA_VISIBLE_DEVICES=0,1,2,3,4,5 python -m torch.distributed.launch --master_port=23456 --nproc_per_node=6 --use_env main.py \
---dataset_config configs/tdod.json \
---train_batch_size 6  \
---valid_batch_size 8  \
---ema --text_encoder_lr 1e-5 --lr 5e-5 \
---num_workers 5 \
---output-dir 'logs/test' \
---eval_skip 1 \
---without_pretrain
-```
-For evaluation, just change `--resume` and set `--without_pretrain` in the aforementioned evaluation command.
+2. **For Student Model (Pronoun Input)**:
+```bash
+# Train detection model on COCO-Tasks
+bash scripts/pronoun/pronoun_cocotasks.sh
 
+# Train segmentation model on COCO-Tasks
+bash scripts/pronoun/pronoun_mask_cocotasks.sh
 
-### 2. Plain segmentation
-After training the detection part of Afford-X, using the following commands to train and evaluate the segment head of Afford-X.
+# Evaluate detection model
+bash scripts/pronoun/eval_pronoun.sh
 
-#### Training
-Please change `--frozen_weights` to the path of the trained detection model.
-```
-CUDA_VISIBLE_DEVICES=0,1,2,3,4,5 python -m torch.distributed.launch --master_port=23456 --nproc_per_node=6 --use_env main.py \
---dataset_config configs/tdod.json \
---train_batch_size 2  \
---valid_batch_size 4  \
---frozen_weights /path/to/trained/detection/checkpoint \
---mask_model smallconv \
---no_aux_loss \
---ema --text_encoder_lr 1e-5 --lr 5e-5 \
---num_workers 5 \
---output-dir 'logs/test' \
---eval_skip 1 \
---no_contrastive_align_loss
+# Evaluate segmentation model
+bash scripts/pronoun/eval_pronoun_mask.sh
 ```
 
-#### Evaluation
-Please change `--resume` to the path of the trained model to be evaluated.
-```
-CUDA_VISIBLE_DEVICES=0 python -m torch.distributed.launch --master_port=23456 --nproc_per_node=1 --use_env main.py \
---dataset_config configs/tdod.json \
---valid_batch_size 4  \
---num_workers 5 \
---resume /path/to/checkpoint  \
---ema --eval \
---output-dir 'logs/test' \
---mask_model smallconv \
---no_contrastive_align_loss
-```
+3. **For Distillation Framework**:
+```bash
+# Train detection with distillation on COCO-Tasks
+bash scripts/distillation/distill_cocotasks.sh
 
-### 3. Afford-X detection with noun-pronoun distillation
+# Train segmentation with distillation on COCO-Tasks
+bash scripts/distillation/distill_mask_cocotasks.sh
 
-#### Training
-To train Afford-X with distillation, change `--load` to the path of the trained student model (taking verb-pronoun as text input) and `--load_noun` to the path of the trained teacher model (taking verb-noun as text input).
+# Evaluate distilled detection model
+bash scripts/distillation/eval_distill.sh
 
-```
-CUDA_VISIBLE_DEVICES=0,1,2,3,4,5 python -m torch.distributed.launch --master_port=23456 --nproc_per_node=6 --use_env main.py \
---dataset_config configs/tdod.json \
---train_batch_size 3  \
---valid_batch_size 8  \
---load /path/to/pronoun/detection/checkpoint  \
---load_noun /path/to/noun/detection/checkpoint \
---ema --text_encoder_lr 1e-5 --lr 5e-5 \
---num_workers 5 \
---output-dir 'logs/test' \
---eval_skip 1 \
---distillation \
---softkd_loss \
---softkd_coef 50 \
---cluster \
---cluster_memory_size 1024 \
---cluster_num 3 \
---cluster_feature_loss 1e4
+# Evaluate distilled segmentation model
+bash scripts/distillation/eval_distill_mask.sh
 ```
 
-The parameters `--cluster`, `--cluster_memory_size`, `--cluster_num` and `--cluster_feature_loss` are used for *Clustering Distillation*. The parameters `--softkd_loss` and `--softkd_coef` are used for *Preference Distillation*.
+Note: Each script contains predefined hyperparameters and configurations. Please check the script content before running and modify paths and parameters as needed. For different datasets, please modify the following parameters:
 
-#### Evaluation
-Please change `--resume` to the path of the trained model to be evaluated.
+- For COCO-Tasks: Set `--dataset_config configs/tdod.json`
+- For COCO-Aff: Set `--dataset_config configs/tdod_coco.json` and add `--load_word_full`
+- For LVIS-Aff: Set `--dataset_config configs/tdod_lvis.json` and add `--load_full --load_word_full`
 
-```
-CUDA_VISIBLE_DEVICES=0 python -m torch.distributed.launch --master_port=23456 --nproc_per_node=1 --use_env main.py \
---dataset_config configs/tdod.json \
---valid_batch_size 4  \
---num_workers 5 \
---resume /path/to/checkpoint  \
---ema --eval \
---output-dir 'logs/test' \
---cluster \
---cluster_memory_size 1024 \
---cluster_num 3 \
---no_contrastive_align_loss \
---distillation
-```
+## Pre-trained Models
 
-The parameters `--cluster_memory_size` and `--cluster_num` should be consistent with training setting.
+We provide pre-trained weights for different datasets:
 
-### 4. Afford-X segmentation with noun-pronoun distillation
+- [COCO-Tasks Model](https://drive.google.com/file/d/1XMy2eBrW6SOrLMI3NpGdDztxRbFvlkpY/view?usp=sharing)
+- [COCO-Aff Model](https://drive.google.com/file/d/1hTmZheupK3IY8LcOj0mwESEvXDkkh7Us/view?usp=drive_link)
+- [LVIS-Aff Model](https://drive.google.com/file/d/11BOEOh7UNKwp3EwcURij44vQpFyRgJ60/view?usp=drive_link)
 
-#### Training
-Please change `--frozen_weights` to the path of the trained detection (with distillation) model.
+After downloading the weights, you can evaluate the models using the provided script. Please modify the model path and other parameters in the script before running:
 
-```
-CUDA_VISIBLE_DEVICES=0,1,2,3,4,5 python -m torch.distributed.launch --master_port=23456 --nproc_per_node=6 --use_env main.py \
---dataset_config configs/tdod.json \
---train_batch_size 2  \
---valid_batch_size 4  \
---frozen_weights /path/to/trained/detection/with/distillation/checkpoint \
---mask_model smallconv \
---no_aux_loss \
---ema --text_encoder_lr 1e-5 --lr 5e-5 \
---num_workers 5 \
---output-dir 'logs/test' \
---eval_skip 1 \
---cluster \
---cluster_memory_size 1024 \
---cluster_num 3 \
---no_contrastive_align_loss
+```bash
+bash scripts/distillation/eval_distill_mask.sh
 ```
 
-#### Evaluation
-Please change `--resume` to the path of the trained model to be evaluated.
+## Datasets
 
+### COCO-Tasks
+The COCO-Tasks dataset can be found at [the official website](https://coco-tasks.github.io/). Follow the instructions there to download the dataset.
+
+### COCO-Aff & LVIS-Aff
+These datasets will be made publicly available soon. Stay tuned!
+
+#### Data Organization
+After downloading, organize your data directory as follows:
 ```
-CUDA_VISIBLE_DEVICES=0 python -m torch.distributed.launch --master_port=23456 --nproc_per_node=1 --use_env main.py \
---dataset_config configs/tdod.json \
---valid_batch_size 4  \
---num_workers 5 \
---resume /path/to/checkpoint  \
---ema --eval \
---output-dir 'logs/test' \
---cluster \
---cluster_memory_size 1024 \
---cluster_num 3 \
---mask_model smallconv \
---no_contrastive_align_loss
+data/
+  ├── coco-tasks/           # COCO-Tasks dataset
+  │    └── annotations/     
+  │         ├── task_1_train.json
+  │         ├── task_1_test.json
+  │         └── ...
+  │
+  ├── coco-aff/            # COCO-Aff dataset (coming soon)
+  │    └── annotations/
+  │         └── ...
+  │
+  ├── lvis-aff/           # LVIS-Aff dataset (coming soon)
+  │    └── annotations/
+  │         └── ...
+  │
+  ├── images/             # Shared image directory
+  │    ├── train2014/    # For COCO-Tasks and COCO-Aff
+  │    ├── val2014/      # For COCO-Tasks and COCO-Aff
+  │    ├── train2017/    # For LVIS-Aff
+  │    └── val2017/      # For LVIS-Aff
+  │
+  ├── id2name.json       # Category mapping file
+  └── id2name_lvis.json  # Category mapping file
 ```
-
-
-
-
-
-<!-- ## Pre-trained Models
-We provide our pretrained models on [Google Drive](https://drive.google.com/drive/folders/1g-4adboRxwO3yuob9tTnq8BZvjbbeVO6?usp=sharing).
-
-<table class="tg">
-<thead>
-  <tr>
-    <th class="tg-0pky">Table/Figure No.</th>
-    <th class="tg-0pky">Row No.</th>
-    <th class="tg-0pky">Model Name</th>
-    <th class="tg-0pky">Checkpoint</th>
-  </tr>
-</thead>
-<tbody>
-  <tr>
-    <td class="tg-c3ow" rowspan="3">Table 1</td>
-    <td class="tg-c3ow">1</td>
-    <td class="tg-0pky">verb-pronoun input</td>
-    <td class="tg-0pky"><a href="https://drive.google.com/file/d/1ud7VahH9vfKoUtd3L3Hkk_iTbXBRrGsb/view?usp=sharing" target="_blank" rel="noopener noreferrer">Google Drive</a></td>
-  </tr>
-  <tr>
-    <td class="tg-c3ow">2</td>
-    <td class="tg-0pky">verb-noun input</td>
-    <td class="tg-0pky"><a href="https://drive.google.com/file/d/1_7GSlO4u-3bCnQq4IqWqzdCVGM9aUXp3/view?usp=sharing" target="_blank" rel="noopener noreferrer">Google Drive</a></td>
-  </tr>
-  <tr>
-    <td class="tg-c3ow">5</td>
-    <td class="tg-0pky">noun-pronoun distillation</td>
-    <td class="tg-y02l"><a href="https://drive.google.com/file/d/1OdIbiqF5E6fxMYVagQBNnIiFj1epT-VA/view?usp=sharing" target="_blank" rel="noopener noreferrer">Google Drive</a></td>
-  </tr>
-  <tr>
-    <td class="tg-c3ow">Figure3 (a)</td>
-    <td class="tg-c3ow">/</td>
-    <td class="tg-0pky">decoder w/o self attention</td>
-    <td class="tg-y02l"><a href="https://drive.google.com/file/d/1YZu-hRYqy--MujuQdVpwGeydveBExrP0/view?usp=sharing" target="_blank" rel="noopener noreferrer">Google Drive</a></td>
-  </tr>
-  <tr>
-    <td class="tg-c3ow" rowspan="5">Figure3 (b)</td>
-    <td class="tg-c3ow">/</td>
-    <td class="tg-0pky">cluster number K=1</td>
-    <td class="tg-y02l"><a href="https://drive.google.com/file/d/1cygbd6ausRctEP89OjO9wOL06OJ4rJqo/view?usp=sharing" target="_blank" rel="noopener noreferrer">Google Drive</a></td>
-  </tr>
-  <tr>
-    <td class="tg-c3ow">/</td>
-    <td class="tg-0pky">cluster number K=2</td>
-    <td class="tg-y02l"><a href="https://drive.google.com/file/d/191E5QXJUIBJjFCd1neqZjlgVKNoSl1yI/view?usp=sharing" target="_blank" rel="noopener noreferrer">Google Drive</a></td>
-  </tr>
-  <tr>
-    <td class="tg-c3ow">/</td>
-    <td class="tg-0pky">cluster number K=5</td>
-    <td class="tg-y02l"><a href="https://drive.google.com/file/d/10Y0GECxo_-BFA6vullBcrD-uzcZMQyhf/view?usp=sharing" target="_blank" rel="noopener noreferrer">Google Drive</a></td>
-  </tr>
-  <tr>
-    <td class="tg-c3ow">/</td>
-    <td class="tg-0pky">cluster number K=7</td>
-    <td class="tg-y02l"><a href="https://drive.google.com/file/d/1Og1hV7ZkHCRs3Qsy_bKu_SKMhcqoLeep/view?usp=sharing" target="_blank" rel="noopener noreferrer">Google Drive</a></td>
-  </tr>
-  <tr>
-    <td class="tg-c3ow">/</td>
-    <td class="tg-0pky">cluster number K=10</td>
-    <td class="tg-y02l"><a href="https://drive.google.com/file/d/1eMrcspX0QxefaBl-gryHZtqMeMHOPY8E/view?usp=sharing" target="_blank" rel="noopener noreferrer">Google Drive</a></td>
-  </tr>
-  <tr>
-    <td class="tg-c3ow" rowspan="6">Table 3</td>
-    <td class="tg-c3ow">2</td>
-    <td class="tg-0pky">CCR/CL/SBTL=F/F/T</td>
-    <td class="tg-y02l"><a href="https://drive.google.com/file/d/1Ibg4xOQJyHT2mtJQ-9qKIMuyQzOYrB1M/view?usp=sharing" target="_blank" rel="noopener noreferrer">Google Drive</a></td>
-  </tr>
-  <tr>
-    <td class="tg-c3ow">3</td>
-    <td class="tg-0pky">CCR/CL/SBTL=F/T/F</td>
-    <td class="tg-y02l"><a href="https://drive.google.com/file/d/1Sjbp8P1wFgNlKeVakQN3X9WSUqa0D36s/view?usp=sharing" target="_blank" rel="noopener noreferrer">Google Drive</a></td>
-  </tr>
-  <tr>
-    <td class="tg-c3ow">4</td>
-    <td class="tg-0pky">CCR/CL/SBTL=F/T/T</td>
-    <td class="tg-y02l"><a href="https://drive.google.com/file/d/1MhJEeApyR5Cg60gM4waq7-dV8U8XeSU4/view?usp=sharing" target="_blank" rel="noopener noreferrer">Google Drive</a></td>
-  </tr>
-  <tr>
-    <td class="tg-c3ow">5</td>
-    <td class="tg-0pky">CCR/CL/SBTL=T/F/F</td>
-    <td class="tg-y02l"><a href="https://drive.google.com/file/d/18gMXj0cryvvYANjfDfyWqW7wy5iR7eyr/view?usp=sharing" target="_blank" rel="noopener noreferrer">Google Drive</a></td>
-  </tr>
-  <tr>
-    <td class="tg-c3ow">6</td>
-    <td class="tg-0pky">CCR/CL/SBTL=T/F/T</td>
-    <td class="tg-y02l"><a href="https://drive.google.com/file/d/1JjFxYrBpkl1By6K3N13txbtbbAE44mT-/view?usp=sharing" target="_blank" rel="noopener noreferrer">Google Drive</a></td>
-  </tr>
-  <tr>
-    <td class="tg-c3ow">7</td>
-    <td class="tg-0pky">CCR/CL/SBTL=T/T/F</td>
-    <td class="tg-y02l"><a href="https://drive.google.com/file/d/1IdZiFgq7YRi-mueenI_iPM3tp070wd5j/view?usp=sharing" target="_blank" rel="noopener noreferrer">Google Drive</a></td>
-  </tr>
-  <tr>
-    <td class="tg-c3ow" rowspan="3">Table 5</td>
-    <td class="tg-c3ow">1</td>
-    <td class="tg-0pky">verb-pronoun input w/o pretraining</td>
-    <td class="tg-y02l"><a href="https://drive.google.com/file/d/1HDvXd2UNpzpTgWmu0caFExqFAbMoOWrT/view?usp=sharing" target="_blank" rel="noopener noreferrer">Google Drive</a></td>
-  </tr>
-  <tr>
-    <td class="tg-c3ow">2</td>
-    <td class="tg-0pky">verb-noun input w/o pretraining</td>
-    <td class="tg-y02l"><a href="https://drive.google.com/file/d/1Q2xE3YrOjWl4JBFaEBLtA2e-mSjuBeEs/view?usp=sharing" target="_blank" rel="noopener noreferrer">Google Drive</a></td>
-  </tr>
-  <tr>
-    <td class="tg-c3ow">3</td>
-    <td class="tg-0pky">noun-pronoun distillation w/o pretraining</td>
-    <td class="tg-y02l"><a href="https://drive.google.com/file/d/1QhaYl0lTihYJko5jyXKDyl2wYUUvBt6X/view?usp=sharing" target="_blank" rel="noopener noreferrer">Google Drive</a></td>
-  </tr>
-  <tr>
-    <td class="tg-c3ow" rowspan="6">Table 6</td>
-    <td class="tg-c3ow">2</td>
-    <td class="tg-0pky">it</td>
-    <td class="tg-y02l"><a href="https://drive.google.com/file/d/1cdqrHtoFbXFDP7fWrF25zW9M92A2t8c1/view?usp=sharing" target="_blank" rel="noopener noreferrer">Google Drive</a></td>
-  </tr>
-  <tr>
-    <td class="tg-c3ow">3</td>
-    <td class="tg-0pky">them</td>
-    <td class="tg-y02l"><a href="https://drive.google.com/file/d/1DjcpOPeU20SFzVX6dw_NEPTn9sdXfgKf/view?usp=sharing" target="_blank" rel="noopener noreferrer">Google Drive</a></td>
-  </tr>
-  <tr>
-    <td class="tg-c3ow">4</td>
-    <td class="tg-0pky">abcd</td>
-    <td class="tg-y02l"><a href="https://drive.google.com/file/d/13OfdqoHmgmWlUDr_sp-8601I7kMWis6_/view?usp=sharing" target="_blank" rel="noopener noreferrer">Google Drive</a></td>
-  </tr>
-  <tr>
-    <td class="tg-c3ow">6</td>
-    <td class="tg-0pky">it w/ distillation</td>
-    <td class="tg-y02l"><a href="https://drive.google.com/file/d/1g93uqLJ5L3fPzBS5eOCi1VsWM-4DbUDD/view?usp=sharing" target="_blank" rel="noopener noreferrer">Google Drive</a></td>
-  </tr>
-  <tr>
-    <td class="tg-c3ow">7</td>
-    <td class="tg-0pky">them w/ distillation</td>
-    <td class="tg-y02l"><a href="https://drive.google.com/file/d/1xyoWRXSeude5UebYrvIFRcKbdUNzaDwT/view?usp=sharing" target="_blank" rel="noopener noreferrer">Google Drive</a></td>
-  </tr>
-  <tr>
-    <td class="tg-c3ow">8</td>
-    <td class="tg-0pky">abcd w/ distillation</td>
-    <td class="tg-y02l"><a href="https://drive.google.com/file/d/1NzPW09ih4grF8JihdVWh_q2JrFV51ByF/view?usp=sharing" target="_blank" rel="noopener noreferrer">Google Drive</a></td>
-  </tr>
-  <tr>
-    <td class="tg-c3ow">Table 8</td>
-    <td class="tg-c3ow">2</td>
-    <td class="tg-0pky">first-in-first-out memory update</td>
-    <td class="tg-y02l"><a href="https://drive.google.com/file/d/1Fb6M_pLcR7AMPewpoAb9I-4BVCNN9KWG/view?usp=sharing" target="_blank" rel="noopener noreferrer">Google Drive</a></td>
-  </tr>
-</tbody>
-</table> -->
-
 
 ## License
 

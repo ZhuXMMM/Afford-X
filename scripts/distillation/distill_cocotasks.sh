@@ -15,4 +15,4 @@ python -m torch.distributed.launch --master_port=23456 --nproc_per_node=4 --use_
     --cluster_feature_loss 1e4 \
     --softkd_loss \
     --softkd_coef 100 \
-    --verb_att \                                                                                                                                                                                                                                                                                                                                                                                 
+    --fusion --verb_att \                                                                                                                                                                                                                                                                                                                                                                             

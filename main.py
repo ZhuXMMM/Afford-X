@@ -31,6 +31,30 @@ from IPython import embed
 import yaml
 import os
 os.environ["CUDA_LAUNCH_BLOCKING"] = "1"
+os.chdir('/home/yuyang/dev/afford-x/AffordX-main')
+
+def verify_mask_head(model, loaded_state_dict, description=""):
+    """
+    验证模型的 mask_head 参数是否与加载的参数一致
+    """
+    model_state = model.mask_head.state_dict()
+    mismatch = False
+    for key in loaded_state_dict:
+        if key in model_state:
+            # 确保两个张量在同一设备上
+            model_tensor = model_state[key].to(loaded_state_dict[key].device)
+            loaded_tensor = loaded_state_dict[key].to(model_tensor.device)
+            if not torch.allclose(model_tensor, loaded_tensor, atol=1e-6):
+                print(f"{description} - Parameter {key} does not match.")
+                mismatch = True
+        else:
+            print(f"{description} - Parameter {key} not found in model.mask_head.")
+            mismatch = True
+    if not mismatch:
+        print(f"{description} - All mask_head parameters match the loaded state.")
+    else:
+        print(f"{description} - Some mask_head parameters do not match the loaded state.")
+
 
 def get_args_parser():
     parser = argparse.ArgumentParser("Set transformer detector", add_help=False)
@@ -267,9 +291,13 @@ def get_args_parser():
     parser.add_argument("--load_full", action="store_true")
     parser.add_argument("--use_dyhead", action="store_true")
     parser.add_argument("--use_txtlayer", action="store_true")
+    parser.add_argument("--use_se", action="store_true")
     parser.add_argument("--fusion", action="store_true")
     parser.add_argument("--verb_att", action="store_true")
     parser.add_argument("--load_word_full", action="store_true")
+    parser.add_argument("--load_lvis", action="store_true")
+    parser.add_argument("--load_voc", action="store_true")
+    parser.add_argument("--load_coco", action="store_true")
     parser.add_argument("--fpn", action="store_true")
     parser.add_argument("--layer_wise_loss", action="store_true", help="Whether to add layer-wise distillation loss")
     parser.add_argument('--img_memory_distill_coef', default=0.1, type=float, help="Coefficient for the img_memory distillation loss")
@@ -298,12 +326,18 @@ def get_args_parser():
 
 def main(args):
     # Init distributed mode
+    print("#########################")
+    print(torch.cuda.device_count())
+    print("#########################")
     dist.init_distributed_mode(args)
 
     # if dist.is_main_process():
     #     if os.path.exists(Path(args.output_dir)):
-    #         raise RuntimeError('The model directory already exists: %s' % args.output_dir)
-    #     Path(args.output_dir).mkdir(parents=True, exist_ok=True)
+    #         # raise RuntimeError('The model directory already exists: %s' % args.output_dir)
+    #         pass
+    #     else:
+    #         print("Creating directory: %s" % args.output_dir)
+    #         Path(args.output_dir).mkdir(parents=True, exist_ok=True)
 
     # Update dataset specific configs
     if args.dataset_config is not None:
@@ -325,15 +359,23 @@ def main(args):
 
     device = torch.device(args.device)
     output_dir = Path(args.output_dir)
-    os.makedirs(output_dir, exist_ok=True)
-    # 记录准确率
-    filename = f'acc_{int(time.time())}.txt'  # 使用当前时间戳命名文件
-    file_path = f'{output_dir}/{filename}'
-    if not os.path.exists(file_path):
-        #创建一个
+    #output_dir_log 是记录准确率的文件夹，它的路径是把output_dir第一个/前面的内容替换成 logs_result
+    #遍历循环str(output_dir).replace(output_dir，直到遇到logs的part
+    output_dir_log = Path(str(output_dir).replace(output_dir.parts[0], "logs_result"))
+    print("output_dir_log:",output_dir_log)
 
-        with open(file_path, 'w') as f:
-            f.write("Epoch, Metric, Value\n")  # 创建文件并添加标题
+    if dist.is_main_process():
+        os.makedirs(output_dir, exist_ok=True)
+        os.makedirs(output_dir_log, exist_ok=True)
+    # 记录准确率
+        filename = f'acc_{int(time.time())}.txt'  # 使用当前时间戳命名文件
+        file_path = f'{output_dir_log}/{filename}'
+
+        if not os.path.exists(file_path):
+            #创建一个
+
+            with open(file_path, 'w') as f:
+                f.write("Epoch, Metric, Value\n")  # 创建文件并添加标题
 
     # fix the seed for reproducibility
     seed = args.seed + dist.get_rank()
@@ -352,9 +394,6 @@ def main(args):
     if args.distillation:
         model_noun = deepcopy(model)
         model_noun.to(device)
-
-        for param in model_noun.parameters():
-            param.requires_grad = False
     else:
         model_noun = None
         model_noun_ema = None
@@ -367,33 +406,18 @@ def main(args):
     model_ema = deepcopy(model) if args.ema else None
     model_without_ddp = model
     if args.distributed:
+        print("gpu:",args.gpu)
         model = torch.nn.parallel.DistributedDataParallel(model, device_ids=[args.gpu], find_unused_parameters=True)
         model_without_ddp = model.module
     n_parameters = sum(p.numel() for p in model.parameters() if p.requires_grad)
     print("number of params:", n_parameters)
 
     if args.distillation:
-        # Check if any parameter requires grad before wrapping with DDP
-        if any(p.requires_grad for p in model_noun.parameters()):
-            if args.distributed:
-                model_noun = torch.nn.parallel.DistributedDataParallel(
-                    model_noun, 
-                    device_ids=[args.gpu], 
-                    find_unused_parameters=True
-                )
-                model_noun_without_ddp = model_noun.module
-            else:
-                model_noun_without_ddp = model_noun
-        else:
-            # If no parameters require gradients, do not wrap with DDP
-            model_noun_without_ddp = model_noun
-
         model_noun_ema = deepcopy(model_noun) if args.ema else None
         model_noun_without_ddp = model_noun
-        
-        # if args.distributed:
-        #     model_noun = torch.nn.parallel.DistributedDataParallel(model_noun, device_ids=[args.gpu], find_unused_parameters=True)
-        #     model_noun_without_ddp = model_noun.module
+        if args.distributed:
+            model_noun = torch.nn.parallel.DistributedDataParallel(model_noun, device_ids=[args.gpu], find_unused_parameters=True)
+            model_noun_without_ddp = model_noun.module
 
     ###################################################################################
     #################################### optimizer ####################################
@@ -419,28 +443,28 @@ def main(args):
             "lr": args.lr_fusion,
         },
     ]
-    # if args.distillation:
-    #     param_dicts += [
-    #         {
-    #             "params": [
-    #                 p
-    #                 for n, p in model_noun_without_ddp.named_parameters()
-    #                 if "backbone" not in n and "text_encoder" not in n and "vision_language_fusion" not in n and p.requires_grad
-    #             ]
-    #         },
-    #         {
-    #             "params": [p for n, p in model_noun_without_ddp.named_parameters() if "backbone" in n and p.requires_grad],
-    #             "lr": args.lr_backbone,
-    #         },
-    #         {
-    #             "params": [p for n, p in model_noun_without_ddp.named_parameters() if "text_encoder" in n and p.requires_grad],
-    #             "lr": args.text_encoder_lr,
-    #         },
-    #         {
-    #         "params": [p for n, p in model_noun_without_ddp.named_parameters() if "vision_language_fusion" in n and p.requires_grad],
-    #         "lr": args.lr_fusion,
-    #         },
-    #     ]
+    if args.distillation:
+        param_dicts += [
+            {
+                "params": [
+                    p
+                    for n, p in model_noun_without_ddp.named_parameters()
+                    if "backbone" not in n and "text_encoder" not in n and "vision_language_fusion" not in n and p.requires_grad
+                ]
+            },
+            {
+                "params": [p for n, p in model_noun_without_ddp.named_parameters() if "backbone" in n and p.requires_grad],
+                "lr": args.lr_backbone,
+            },
+            {
+                "params": [p for n, p in model_noun_without_ddp.named_parameters() if "text_encoder" in n and p.requires_grad],
+                "lr": args.text_encoder_lr,
+            },
+            {
+            "params": [p for n, p in model_noun_without_ddp.named_parameters() if "vision_language_fusion" in n and p.requires_grad],
+            "lr": args.lr_fusion,
+            },
+        ]
 
     if args.optimizer == "sgd":
         optimizer = torch.optim.SGD(param_dicts, lr=args.lr, momentum=0.9, weight_decay=args.weight_decay)
@@ -457,9 +481,11 @@ def main(args):
 
     dataset_train, sampler_train, data_loader_train = None, None, None
 
-    tokenizer = RobertaTokenizerFast.from_pretrained("roberta-base")
+    path = 'ckpt_new/path/roberta-base'
+    tokenizer = RobertaTokenizerFast.from_pretrained(path)
 
     if not args.eval:
+
         dataset_train = ConcatDataset(
             [build_dataset(name, image_set="train", args=args, tokenizer=tokenizer) for name in args.combine_datasets]
         )
@@ -515,131 +541,46 @@ def main(args):
     #################################### load model weights ####################################
     # Used for loading weights from another model and starting a training from scratch. Especially useful if
     # loading into a model with different functionality.
+    # Load model weights
     if args.load:
         checkpoint_pronoun = torch.load(args.load, map_location="cpu")
-        if "model_ema" in checkpoint_pronoun:
-            model_without_ddp.load_state_dict(checkpoint_pronoun["model_ema"], strict=False)
-        else:
-            model_without_ddp.load_state_dict(checkpoint_pronoun["model"], strict=False)
+        state_dict = checkpoint_pronoun.get("model_ema", checkpoint_pronoun.get("model"))
+        smart_load_state_dict(model_without_ddp, state_dict)
         if args.ema:
             model_ema = deepcopy(model_without_ddp)
 
         if args.distillation:
             print("loading from", args.load_noun)
             checkpoint = torch.load(args.load_noun, map_location="cpu")
-            if "model_ema" in checkpoint:
-                model_noun_without_ddp.load_state_dict(checkpoint["model_ema"], strict=False)
-            else:
-                model_noun_without_ddp.load_state_dict(checkpoint["model"], strict=False)
+            state_dict_noun = checkpoint.get("model_ema", checkpoint.get("model"))
+            smart_load_state_dict(model_noun_without_ddp, state_dict_noun)
             if args.ema:
                 model_noun_ema = deepcopy(model_noun_without_ddp)
 
-    # if args.load:
-    #     checkpoint_pronoun = torch.load(args.load, map_location="cpu")
-    #     print(output_dir)
-    #     if "model_ema" in checkpoint_pronoun:
-    #         if not args.masks or 'mask_head' in checkpoint_pronoun['model_ema'].keys():
-    #             print("Loading model weights from checkpoint")
-    #             new_state_dict = {}
-    #             for k,v in checkpoint_pronoun['model_ema'].items():
-    #                 if k[:5] == 'detr.':
-    #                     name = k[5:]
-    #                     print(name)
-    #                     new_state_dict[name] = v
-    #             model_without_ddp.load_state_dict(new_state_dict, strict=False)
-    #         else:
-    #             print( "Loading model weights from checkpoint")
-    #             model_without_ddp.load_state_dict(checkpoint_pronoun["model_ema"], strict=False)
-    #     else: 
-    #         if not args.masks or 'mask_head' in checkpoint_pronoun['model'].keys():
-    #             print("Loading model weights from checkpoint")
-    #             new_state_dict = {}
-    #             for k,v in checkpoint_pronoun['model'].items():
-    #                 if k[:5] == 'detr.':
-    #                     name = k[5:]
-    #                     new_state_dict[name] = v
-    #             model_without_ddp.load_state_dict(new_state_dict, strict=False)
-    #         else:
-    #             print( "Loading model weights from checkpoint")
-    #             model_without_ddp.load_state_dict(checkpoint_pronoun["model"], strict=False)
-    #     if args.ema:
-    #         model_ema = deepcopy(model_without_ddp)
-
-    #     if args.distillation:
-    #         print("loading from", args.load_noun)
-    #         checkpoint = torch.load(args.load_noun, map_location="cpu")
-    #         if "model_ema" in checkpoint:
-    #             if not args.masks or 'mask_head' in checkpoint['model_ema'].keys():
-    #                 print("Loading model weights from checkpoint")
-    #                 new_state_dict = {}
-    #                 for k,v in checkpoint['model_ema'].items():
-    #                     if k[:5] == 'detr.':
-    #                         name = k[5:]
-    #                         print(name)
-    #                         new_state_dict[name] = v
-    #                 model_noun_without_ddp.load_state_dict(new_state_dict, strict=False)
-    #             else:
-    #                 model_noun_without_ddp.load_state_dict(checkpoint["model_ema"], strict=False)
-    #         else:
-    #             if not args.masks or 'mask_head' in checkpoint['model'].keys():
-    #                 print("Loading model weights from checkpoint")
-    #                 new_state_dict = {}
-    #                 for k,v in checkpoint['model'].items():
-    #                     if k[:5] == 'detr.':
-    #                         name = k[5:]
-    #                         new_state_dict[name] = v
-    #                 model_noun_without_ddp.load_state_dict(new_state_dict, strict=False)
-    #             else:
-    #                 model_noun_without_ddp.load_state_dict(checkpoint["model"], strict=False)
-    #         if args.ema:
-    #             model_noun_ema = deepcopy(model_noun_without_ddp)
-        
-    #     if args.masks and args.mask_path:
-    #         print(f"Loading mask head weights from {args.mask_path}")
-    #         mask_checkpoint = torch.load(args.mask_path, map_location="cpu")
-
-    #         mask_head_state_dict = {}
-    #         for k, v in mask_checkpoint['model'].items():
-    #             if 'mask_head' in k:  # 只加载与mask_head相关的部分
-    #                 print(k)
-    #                 mask_head_state_dict[k] = v
-    
+    # Load frozen weights
     if args.frozen_weights is not None:
         if args.frozen_weights.startswith("https"):
             checkpoint = torch.hub.load_state_dict_from_url(args.frozen_weights, map_location="cpu", check_hash=True)
         else:
             checkpoint = torch.load(args.frozen_weights, map_location="cpu")
-        if "model_ema" in checkpoint and checkpoint["model_ema"] is not None:
-            model_without_ddp.detr.load_state_dict(checkpoint["model_ema"], strict=False)
-        else:
-            model_without_ddp.detr.load_state_dict(checkpoint["model"], strict=False)
-
+        state_dict = checkpoint.get("model_ema", checkpoint.get("model"))
+        smart_load_state_dict(model_without_ddp.detr, state_dict, prefix='detr.')
         if args.ema:
             model_ema = deepcopy(model_without_ddp)
 
         if args.cluster and "cluster_criterion" in checkpoint:
             cluster_criterion.load_state_dict(checkpoint["cluster_criterion"], strict=False)
 
-    # Used for resuming training from the checkpoint of a model. Used when training times-out or is pre-empted.
+    # Resume training
     if args.resume:
         if args.resume.startswith("https"):
             checkpoint = torch.hub.load_state_dict_from_url(args.resume, map_location="cpu", check_hash=True)
         else:
             checkpoint = torch.load(args.resume, map_location="cpu")
         
-        # If the ckpt has segmentation part but resume for detection:
-        if not args.masks and 'mask_head.adapter3.bias' in checkpoint['model'].keys():
-            new_state_dict = {}
-            for k,v in checkpoint['model'].items():
-                if k[:5] == 'detr.':
-                    name = k[5:]
-                    new_state_dict[name] = v
-            model_without_ddp.load_state_dict(new_state_dict, strict=False)
-        else:
-            model_without_ddp.load_state_dict(checkpoint["model"], strict=False)
+        state_dict = checkpoint["model"]
+        smart_load_state_dict(model_without_ddp, state_dict)
         
-        # The ckpt provided in github repo corresponds to the model with segmentation part, 
-        # which is not suitable for resuming optimizer. 
         if not args.eval and "optimizer" in checkpoint and "epoch" in checkpoint:
             optimizer.load_state_dict(checkpoint["optimizer"])
             args.start_epoch = checkpoint["epoch"] + 1
@@ -652,16 +593,8 @@ def main(args):
                 print("WARNING: ema model not found in checkpoint, resetting to current model")
                 model_ema = deepcopy(model_without_ddp)
             else:
-                if not args.masks and 'mask_head.adapter3.bias' in checkpoint['model_ema'].keys():
-                    new_state_dict = {}
-                    for k,v in checkpoint['model_ema'].items():
-                        if k[:5] == 'detr.':
-                            name = k[5:]
-                            new_state_dict[name] = v
-                    model_ema.load_state_dict(new_state_dict, strict=False)
-                else:
-                    model_ema.load_state_dict(checkpoint["model_ema"], strict=False)
-
+                state_dict_ema = checkpoint["model_ema"]
+                smart_load_state_dict(model_ema, state_dict_ema)
 
     #######################################################################################
     #################################### train or eval ####################################
@@ -677,14 +610,30 @@ def main(args):
         return evaluator_list
 
     if args.eval:
-        for name, param in model_ema.mask_head.named_parameters():
-            # print(f"{name}: {param}")
-            break
+
+        checkpoint_paths = [output_dir / "checkpoint.pth"]
+        # extra checkpoint before LR drop and every 100 epochs
+        for checkpoint_path in checkpoint_paths:
+            dist.save_on_master(
+                {
+                    "model": model_without_ddp.state_dict(),
+                    "model_ema": model_ema.state_dict() if args.ema else None,
+                    "model_noun": model_noun_without_ddp.state_dict() if args.distillation else None,
+                    "model_noun_ema": model_noun_ema.state_dict() if args.distillation and args.ema else None,
+                    "optimizer": optimizer.state_dict(),
+                    "epoch": 0,
+                    "args": args,
+                    "cluster_criterion": cluster_criterion.state_dict() if args.cluster else None,
+                },
+                checkpoint_path,
+            )
+            
         ap_bbox_0p5_list = []
         ap_mask_0p5_list = []
         test_stats = {}
         test_model = model_ema if model_ema is not None else model
         test_model_noun = model_noun_ema if model_noun_ema is not None else model_noun
+
         for i, item in enumerate(val_tuples):
             evaluator_list = build_evaluator_list(item.base_ds, item.dataset_name)
             postprocessors = build_postprocessors(args, item.dataset_name)
@@ -856,10 +805,6 @@ def main(args):
                             # 计算并记录mAP@0.5 for masks
                             metric_masks = np.mean([v[1] for k, v in test_stats.items() if "coco_eval_masks" in k])
                             f.write(f"{epoch}, Masks mAP@0.5, {metric_masks}\n")
-                        if args.load_full:
-                            # 如果args.use_full为True，计算并记录前14个任务的mAP的平均值
-                            mAP_14_tasks = np.mean([v[1] for k, v in test_stats.items() if 'coco_eval_bbox' in k][:14])
-                            f.write(f"{epoch}, 14 tasks mAP mean, {mAP_14_tasks}\n")
 
             if args.output_dir:
                 save_best = False
@@ -892,7 +837,41 @@ def main(args):
     total_time_str = str(datetime.timedelta(seconds=int(total_time)))
     print("Training time {}".format(total_time_str))
 
-
+def smart_load_state_dict(model, state_dict, prefix=None):
+    model_dict = model.state_dict()
+    
+    if prefix is None:
+        prefixes = ['detr.', 'mask_head.']
+    else:
+        prefixes = [prefix]
+    
+    new_state_dict = {}
+    for k, v in state_dict.items():
+        matched = False
+        for p in prefixes:
+            model_has_prefix = any(mk.startswith(p) for mk in model_dict.keys())
+            state_has_prefix = k.startswith(p)
+            
+            if model_has_prefix and not state_has_prefix:
+                new_key = p + k
+            elif not model_has_prefix and state_has_prefix:
+                new_key = k[len(p):]
+            else:
+                new_key = k
+            
+            if new_key in model_dict:
+                new_state_dict[new_key] = v
+                matched = True
+                break
+        
+        if not matched:
+            if k in model_dict:
+                new_state_dict[k] = v
+            else:
+                print(f"Warning: {k} not found in model, skipping.")
+    
+    model.load_state_dict(new_state_dict, strict=False)
+    
 if __name__ == "__main__":
     parser = argparse.ArgumentParser("TOIST training and evaluation.", parents=[get_args_parser()])
     args = parser.parse_args()
