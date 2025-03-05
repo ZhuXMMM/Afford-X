@@ -3,6 +3,7 @@
 This repository is an official implementation of AffordX:
 
 A Generalizable and Slim Affordance Reasoning Framework for Task-oriented Manipulation
+
 [Xiaomeng Zhu]( )<sup>†</sup>, [Yuyang Li]( )<sup>†</sup>, [Leiyao Cui]( ), [Pengfei Li](), [Huan-ang Gao](), [Yixin Zhu](https://yzhu.io/)<sup>✉</sup>, [Hao Zhao](https://sites.google.com/view/fromandto)<sup>✉</sup>
 
 <small><sup>†</sup> Equal contribution, <sup>✉</sup> Corresponding author.</small>
