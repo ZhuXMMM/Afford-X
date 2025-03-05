@@ -1,0 +1,15 @@
+python -m torch.distributed.launch --master_port=23456 --nproc_per_node=4 --use_env main.py \
+    --dataset_config configs/tdod_lvis.json \
+    --train_batch_size 3  \
+    --valid_batch_size 6  \
+    --frozen_weights [trained_noun_checkpoint] \
+    --ema --text_encoder_lr 1e-5 --lr 5e-5  --lr_fusion 8e-5 \
+    --num_workers 4 \
+    --output-dir 'logs/noun_mask/lvis' \
+    --eval_skip 1 \
+    --verb_noun_input \
+    --mask_model smallconv \
+    --no_aux_loss \
+    --no_contrastive_align_loss \
+    --fusion --verb_att \
+    --load_full --load_word_full \

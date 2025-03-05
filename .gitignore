@@ -7,3 +7,4 @@ ckpt/
 wenshushu/
 __pycache__
 .gitignore
+logs/

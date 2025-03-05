@@ -1,0 +1,19 @@
+python -m torch.distributed.launch --master_port=23456 --nproc_per_node=4 --use_env main.py \
+    --dataset_config configs/tdod_coco.json \
+    --train_batch_size 5 \
+    --valid_batch_size 12 \
+    --load [trained_noun_checkpoint] \
+    --load_noun [trained_pronoun_checkpoint] \
+    --ema --text_encoder_lr 1e-8 --lr 5e-6 --lr_fusion 5e-6\
+    --num_workers 5 \
+    --output-dir 'log/distill/coco/affordx' \
+    --eval_skip 1 \
+    --distillation \
+    --cluster \
+    --cluster_memory_size 1024 \
+    --cluster_num 3 \
+    --cluster_feature_loss 1e4 \
+    --softkd_loss \
+    --softkd_coef 100 \
+    --fusion --verb_att \
+    --load_word_full \

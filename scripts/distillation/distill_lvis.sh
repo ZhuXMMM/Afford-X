@@ -1,0 +1,17 @@
+python -m torch.distributed.launch --master_port=23456 --nproc_per_node=4 --use_env main.py \
+    --dataset_config configs/tdod_coco.json \
+    --train_batch_size 5 \
+    --valid_batch_size 12 \
+    --load [trained_noun_checkpoint] \
+    --load_noun [trained_pronoun_checkpoint] \
+    --ema --text_encoder_lr 1e-5 --lr 8e-5 --lr_fusion 5e-6\
+    --num_workers 5 \
+    --output-dir 'log/distill/lvis' \
+    --eval_skip 1 \
+    --distillation \
+    --cluster \
+    --cluster_memory_size 1024 \
+    --cluster_num 3 \
+    --cluster_feature_loss 1e4 \
+    --fusion --verb_att \
+    --load_full  --load_word_full \
