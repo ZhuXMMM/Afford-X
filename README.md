@@ -13,17 +13,6 @@ Object affordance reasoning, the ability to infer object functionalities based o
 
 <p align="center"><img src="media/teaser.png" width="600" /></p>
 
-
-<!-- If you find our code or paper useful, please consider citing: -->
-<!-- ```bibtex
-@article{li2022toist,
-  title={Afford-X: Task Oriented Instance Segmentation Transformer with Noun-Pronoun Distillation},
-  author={Li, Pengfei and Tian, Beiwen and Shi, Yongliang and Chen, Xiaoxue and Zhao, Hao and Zhou, Guyue and Zhang, Ya-Qin},
-  journal={arXiv preprint arXiv:2210.10775},
-  year={2022}
-}
-``` -->
-
 This repository is a PyTorch implementation.
 
 ## Datasets
@@ -201,5 +190,13 @@ Afford-X is released under the MIT License.
 We would like to thank the open-source data and code of [COCO-Tasks](https://coco-tasks.github.io/), [Microsoft COCO](https://cocodataset.org/#home), [GGNN](https://github.com/yassersouri/task-driven-object-detection), [MDETR](https://github.com/ashkamath/mdetr), [DETR](https://github.com/facebookresearch/detr), [Detectron2](https://github.com/facebookresearch/detectron2) and [TOIST](https://github.com/AIR-DISCOVER/TOIST).
 
 
-
+<!-- If you find our code or paper useful, please consider citing: -->
+```bibtex
+@misc{zhu2025affordxgeneralizableslimaffordance,
+      title={Afford-X: Generalizable and Slim Affordance Reasoning for Task-oriented Manipulation}, 
+      author={Xiaomeng Zhu and Yuyang Li and Leiyao Cui and Pengfei Li and Huan-ang Gao and Yixin Zhu and Hao Zhao},
+      journal={arXiv preprint arXiv:2503.03556},
+      year={2025}
+}
+```
 
