@@ -190,7 +190,8 @@ Afford-X is released under the MIT License.
 We would like to thank the open-source data and code of [COCO-Tasks](https://coco-tasks.github.io/), [Microsoft COCO](https://cocodataset.org/#home), [GGNN](https://github.com/yassersouri/task-driven-object-detection), [MDETR](https://github.com/ashkamath/mdetr), [DETR](https://github.com/facebookresearch/detr), [Detectron2](https://github.com/facebookresearch/detectron2) and [TOIST](https://github.com/AIR-DISCOVER/TOIST).
 
 
-<!-- If you find our code or paper useful, please consider citing: -->
+## Citation
+If you find our code or paper useful, please consider citing:
 ```bibtex
 @misc{zhu2025affordxgeneralizableslimaffordance,
       title={Afford-X: Generalizable and Slim Affordance Reasoning for Task-oriented Manipulation}, 
