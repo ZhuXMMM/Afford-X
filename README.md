@@ -180,6 +180,10 @@ data/
   └── id2name_lvis.json  # Category mapping file
 ```
 
+## Segment Anything Integration for Simulation
+
+In our simulation tasks, we have integrated Meta AI's [Segment Anything Model (SAM)](https://github.com/facebookresearch/segment-anything) to enhance the quality of segmentation masks. SAM provides superior zero-shot segmentation capabilities that significantly improve the precision of object masks for manipulation tasks. To utilize this feature, clone the SAM repository into your project directory, install its dependencies with `pip install -e .`, and download the appropriate pre-trained weights (we recommend the ViT-H model for best results). Configure the model path in your settings, and the framework will automatically leverage SAM's capabilities during mask generation processes. Please refer to the [official SAM repository](https://github.com/facebookresearch/segment-anything) for detailed installation instructions and model options.
+
 ## License
 
 Afford-X is released under the MIT License.

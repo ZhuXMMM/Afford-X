@@ -6,7 +6,7 @@ import numpy as np
 from PIL import Image
 import cv2
 from .models import build_model
-from .mymain import build_postprocessors
+from .main import build_postprocessors
 from .datasets import transforms as T
 from segment_anything import sam_model_registry, SamPredictor
 import matplotlib.patches as patches
