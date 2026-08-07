@@ -82,6 +82,10 @@ body {
   display: inline-block;
 }
 
+.affiliation-block {
+  line-height: 1.45;
+}
+
 .publication-banner img {
 }
 
